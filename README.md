@@ -64,10 +64,10 @@ Add some friendly competition with real-time leaderboards, rank animations and (
 - Integrate Firebase test user data into login/signup flow
 - Implement basic navigation between pages
 
-changes : user flow , database tables ,  maintain in excel 
-
 ## 🔁 End-of-Day Deliverables:
 - Firebase Realtime DB ready with test data
 - HTML/CSS layout for homepage, quiz, login, signup, and rewards pages
 - GitHub repository initialized and shared among team
 - Navigation structure implemented
+
+changes : user flow , database tables ,  maintain in excel 
