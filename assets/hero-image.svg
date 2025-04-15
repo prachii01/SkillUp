@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Elements -->
+    <circle cx="400" cy="300" r="250" fill="#E3F2FD" opacity="0.5"/>
+    <circle cx="400" cy="300" r="200" fill="#BBDEFB" opacity="0.3"/>
+    
+    <!-- Graduation Cap -->
+    <path d="M400 150L550 250L400 350L250 250L400 150Z" fill="#3498db"/>
+    <path d="M375 275V350L400 365L425 350V275L400 290L375 275Z" fill="#2980b9"/>
+    <circle cx="400" cy="150" r="20" fill="#2980b9"/>
+    
+    <!-- Books Stack -->
+    <rect x="300" y="400" width="200" height="30" rx="5" fill="#e74c3c"/>
+    <rect x="310" y="370" width="180" height="30" rx="5" fill="#3498db"/>
+    <rect x="320" y="340" width="160" height="30" rx="5" fill="#2ecc71"/>
+    
+    <!-- Stars -->
+    <path d="M600 100L615 130L650 135L625 160L630 195L600 180L570 195L575 160L550 135L585 130L600 100Z" fill="#f1c40f"/>
+    <path d="M700 200L710 220L730 223L715 240L718 260L700 250L682 260L685 240L670 223L690 220L700 200Z" fill="#f1c40f"/>
+    <path d="M650 300L660 320L680 323L665 340L668 360L650 350L632 360L635 340L620 323L640 320L650 300Z" fill="#f1c40f"/>
+</svg>

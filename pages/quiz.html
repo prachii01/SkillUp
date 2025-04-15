@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes - SkillUp</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <a href="../index.html">SkillUp</a>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="quiz.html" class="active">Quizzes</a>
+            <a href="profile.html">Profile</a>
+            <span id="userPoints">0 pts</span>
+        </div>
+    </nav>
+
+    <!-- Quiz Section -->
+    <div class="quiz-container">
+        <!-- Quiz List View -->
+        <section id="quizList" class="quiz-list">
+            <h2>Available Quizzes</h2>
+            <div class="quiz-filters">
+                <select id="topicFilter">
+                    <option value="">All Topics</option>
+                    <option value="math">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="history">History</option>
+                </select>
+                <select id="difficultyFilter">
+                    <option value="">All Difficulties</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div class="quiz-grid" id="quizGrid">
+                <!-- Quiz cards will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Active Quiz View -->
+        <section id="activeQuiz" class="active-quiz hidden">
+            <div class="quiz-header">
+                <h2 id="quizTitle"></h2>
+                <div class="quiz-info">
+                    <span id="questionNumber"></span>
+                    <div id="timer" class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span>00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="question-container">
+                <p id="questionText"></p>
+                <div id="options" class="options-grid">
+                    <!-- Options will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Results View -->
+        <section id="quizResults" class="quiz-results hidden">
+            <div class="results-card">
+                <h2>Quiz Complete!</h2>
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="scorePercentage">0%</span>
+                    </div>
+                </div>
+                <div class="results-details">
+                    <p>Correct Answers: <span id="correctAnswers">0</span></p>
+                    <p>Time Taken: <span id="timeTaken">0:00</span></p>
+                    <p>Points Earned: <span id="pointsEarned">0</span></p>
+                </div>
+                <div class="results-actions">
+                    <button class="btn btn-primary" onclick="retryQuiz()">Try Again</button>
+                    <button class="btn btn-secondary" onclick="returnToQuizList()">Back to Quizzes</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/quiz.js"></script>
+</body>
+</html>

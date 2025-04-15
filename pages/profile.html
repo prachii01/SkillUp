@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SkillUp</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <a href="../index.html">SkillUp</a>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="quiz.html">Quizzes</a>
+            <a href="profile.html" class="active">Profile</a>
+            <span id="userPoints">0 pts</span>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- User Info Section -->
+        <section class="user-info-section">
+            <div class="user-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h2 id="userName">Loading...</h2>
+                    <p id="userEmail">loading@example.com</p>
+                    <div class="user-stats">
+                        <div class="stat">
+                            <i class="fas fa-star"></i>
+                            <span id="totalPoints">0</span>
+                            <label>Points</label>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-medal"></i>
+                            <span id="totalBadges">0</span>
+                            <label>Badges</label>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-trophy"></i>
+                            <span id="totalTrophies">0</span>
+                            <label>Trophies</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="achievements-section">
+            <h3>Achievements</h3>
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Achievements will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="progress-section">
+            <h3>Your Progress</h3>
+            <div class="progress-stats">
+                <div class="progress-card">
+                    <h4>Quiz Completion</h4>
+                    <div class="progress-bar">
+                        <div class="progress" id="quizProgress" style="width: 0%"></div>
+                    </div>
+                    <p><span id="completedQuizzes">0</span> of <span id="totalQuizzes">0</span> quizzes completed</p>
+                </div>
+                <div class="progress-card">
+                    <h4>Average Score</h4>
+                    <div class="score-circle">
+                        <span id="averageScore">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="leaderboard-section">
+            <h3>Leaderboard</h3>
+            <div class="leaderboard-filters">
+                <select id="timeFilter">
+                    <option value="weekly">This Week</option>
+                    <option value="monthly">This Month</option>
+                    <option value="allTime">All Time</option>
+                </select>
+            </div>
+            <div class="leaderboard-list" id="leaderboardList">
+                <!-- Leaderboard entries will be dynamically added here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html>
