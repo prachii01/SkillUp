@@ -1,0 +1,321 @@
+.auth-page {
+    background: linear-gradient(135deg, #1a1c2c 0%, #2c3e50 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-y: auto;
+}
+
+.game-world {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.auth-container {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.level-indicator {
+    margin-bottom: 2rem;
+}
+
+.level-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.level-badge i {
+    font-size: 2rem;
+    color: #f1c40f;
+}
+
+.progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #f1c40f, #f39c12);
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+.auth-card h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.quest-text {
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.form-group.achievement {
+    display: flex;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.achievement-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement-icon i {
+    color: #f1c40f;
+    font-size: 1.2rem;
+}
+
+.form-input {
+    flex: 1;
+}
+
+.form-input label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-input input {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-input input:focus {
+    outline: none;
+    border-color: #f1c40f;
+    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
+}
+
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: glow 2s linear infinite;
+}
+
+@keyframes glow {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.auth-divider {
+    margin: 2rem 0;
+    position: relative;
+    text-align: center;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider::before { left: 0; }
+.auth-divider::after { right: 0; }
+
+.auth-divider span {
+    background: rgba(26, 28, 44, 0.8);
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+.btn-google {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-google:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.auth-links {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.quest-link {
+    color: #f1c40f;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.quest-link:hover {
+    color: #f39c12;
+    transform: translateY(-1px);
+}
+
+.auth-links p {
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.loading-overlay {
+    background: rgba(26, 28, 44, 0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.loading-text {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(241, 196, 15, 0.1);
+    border-top-color: #f1c40f;
+    animation: spin 1s linear infinite;
+}
+
+.error-message {
+    background: rgba(231, 76, 60, 0.2);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.error-message i {
+    color: #e74c3c;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 1rem;
+        align-items: flex-start;
+        min-height: calc(100vh - 60px);
+        padding-top: 2rem;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .form-group.achievement {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .achievement-icon {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1rem;
+    }
+
+    .auth-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+.nav-toggle {
+    display: none;
+}

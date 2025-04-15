@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SkillUp</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <a href="../index.html">SkillUp</a>
+        </div>
+        <button class="nav-toggle" id="navToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <a href="profile.html">Profile</a>
+            <a href="quiz.html">Quiz</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="active">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Sign Up Form -->
+    <div class="auth-container">
+        <div class="game-world">
+            <div class="floating-elements">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-graduation-cap"></i>
+                <i class="fas fa-trophy"></i>
+                <i class="fas fa-crown"></i>
+                <i class="fas fa-medal"></i>
+            </div>
+        </div>
+        <div class="auth-card">
+            <div class="level-indicator">
+                <div class="level-badge">
+                    <i class="fas fa-scroll"></i>
+                    <span>New Adventure</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+            </div>
+            <h2>Begin Your Quest</h2>
+            <p class="quest-text">Create your adventurer profile to start your learning journey</p>
+            <div id="errorMessage" class="error-message hidden"></div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="username">Choose Your Name</label>
+                        <input type="text" id="username" required>
+                    </div>
+                </div>
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="email">Magic Scroll (Email)</label>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="password">Secret Spell (Password)</label>
+                        <input type="password" id="password" required>
+                    </div>
+                </div>
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="confirmPassword">Confirm Your Spell</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-glow">
+                    <i class="fas fa-hat-wizard"></i>
+                    Create Your Character
+                </button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Alternative Path</span>
+            </div>
+            
+            <button id="googleSignIn" class="btn btn-google btn-glow">
+                <i class="fab fa-google"></i>
+                Join with Google Magic
+            </button>
+            
+            <div class="auth-links">
+                <p>Already an adventurer? 
+                    <a href="login.html" class="quest-link">
+                        <i class="fas fa-door-open"></i>
+                        Return to Academy
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loader"></div>
+        <p class="loading-text">Creating your character...</p>
+    </div>
+
+    <script type="module">
+        import { auth, db } from '../js/config.js';
+        import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+        const signupForm = document.getElementById('signupForm');
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressBar = document.querySelector('.progress');
+        const googleProvider = new GoogleAuthProvider();
+
+        // Show/Hide loading with animation
+        const showLoading = () => {
+            loadingOverlay.classList.remove('hidden');
+            progressBar.style.width = '30%';
+            setTimeout(() => {
+                progressBar.style.width = '60%';
+            }, 500);
+        };
+
+        const hideLoading = () => {
+            progressBar.style.width = '100%';
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+                progressBar.style.width = '0%';
+            }, 500);
+        };
+
+        // Show error message with game-style notification
+        const showError = (message) => {
+            errorMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            errorMessage.classList.remove('hidden');
+            errorMessage.classList.add('shake');
+            setTimeout(() => {
+                errorMessage.classList.remove('shake');
+                setTimeout(() => {
+                    errorMessage.classList.add('hidden');
+                }, 500);
+            }, 500);
+        };
+
+        // Create user profile
+        const createUserProfile = async (userId, userData) => {
+            const userRef = doc(db, 'users', userId);
+            await setDoc(userRef, {
+                ...userData,
+                createdAt: new Date().toISOString(),
+                points: 0,
+                level: 1,
+                quizzesTaken: 0,
+                badges: ['newcomer'],
+                achievements: []
+            });
+        };
+
+        // Handle Email Sign Up
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                hideLoading();
+                showError('Your spells do not match! Try casting them again.');
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await createUserProfile(userCredential.user.uid, {
+                    username,
+                    email: userCredential.user.email,
+                    displayName: username
+                });
+                
+                window.location.href = 'profile.html';
+            } catch (error) {
+                hideLoading();
+                showError(error.message);
+            }
+        });
+
+        // Handle Google Sign In
+        googleSignInBtn.addEventListener('click', async () => {
+            showLoading();
+            
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                await createUserProfile(result.user.uid, {
+                    username: result.user.displayName,
+                    email: result.user.email,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL
+                });
+                
+                window.location.href = 'profile.html';
+            } catch (error) {
+                hideLoading();
+                showError(error.message);
+            }
+        });
+
+        // Add floating animation to elements
+        const floatingElements = document.querySelectorAll('.floating-elements i');
+        floatingElements.forEach((element, index) => {
+            element.style.animation = `float 3s ease-in-out ${index * 0.5}s infinite`;
+        });
+
+        // Mobile Navigation Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            navToggle.querySelector('i').classList.toggle('fa-bars');
+            navToggle.querySelector('i').classList.toggle('fa-times');
+        });
+    </script>
+</body>
+</html>
