@@ -1,0 +1,555 @@
+@import url('common.css');
+
+.leaderboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.leaderboard-title {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    position: relative;
+}
+
+.leaderboard-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-btn {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    padding: 0.7rem 1.2rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filter-btn i {
+    margin-left: 0.5rem;
+}
+
+.filter-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--background-dark);
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    width: 200px;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.filter-menu.active {
+    display: block;
+    animation: fadeIn 0.2s;
+}
+
+.filter-option {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.filter-option:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.filter-option.active {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: var(--primary-color);
+}
+
+.leaderboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.rank-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.rank-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.rank-position {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rank-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.rank-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.rank-1 .rank-circle {
+    background-color: var(--badge-gold);
+    color: #000;
+}
+
+.rank-2 .rank-circle {
+    background-color: var(--badge-silver);
+    color: #000;
+}
+
+.rank-3 .rank-circle {
+    background-color: var(--badge-bronze);
+    color: #000;
+}
+
+.rank-avatar {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--background-light);
+    border: 3px solid var(--background-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.rank-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rank-username {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.rank-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.rank-stat {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.rank-badges {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.rank-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.rank-badge i {
+    color: var(--primary-color);
+}
+
+.leaderboard-table-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th {
+    text-align: left;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.leaderboard-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.leaderboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+.leaderboard-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.user-rank {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rank-number {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.rank-1 .rank-number, 
+.rank-2 .rank-number, 
+.rank-3 .rank-number {
+    color: #000;
+}
+
+tr.rank-1 .rank-number {
+    background-color: var(--badge-gold);
+}
+
+tr.rank-2 .rank-number {
+    background-color: var(--badge-silver);
+}
+
+tr.rank-3 .rank-number {
+    background-color: var(--badge-bronze);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--background-light);
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-level {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 0.2rem;
+}
+
+.points-cell {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.badges-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.badge-icon i {
+    color: var(--primary-color);
+}
+
+.current-user {
+    background-color: rgba(241, 196, 15, 0.1);
+}
+
+.current-user td {
+    border-color: var(--primary-color);
+}
+
+.leaderboard-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+}
+
+.page-btn {
+    width: 35px;
+    height: 35px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.page-btn.active {
+    background-color: var(--primary-color);
+    color: #000;
+}
+
+.weekly-winners {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+.winners-list {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.winner-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    min-width: 250px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.winner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.winner-week {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.winner-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.winner-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--background-light);
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 3px solid var(--primary-color);
+    overflow: hidden;
+}
+
+.winner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.winner-details h3 {
+    margin-bottom: 0.3rem;
+}
+
+.winner-level {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.winner-achievement {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+
+.achievement-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.achievement-icon i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.achievement-details {
+    flex: 1;
+}
+
+.achievement-name {
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.achievement-description {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+@keyframes moveUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes moveDown {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.rank-change-up {
+    animation: moveUp 0.5s;
+    color: var(--accent-color);
+}
+
+.rank-change-down {
+    animation: moveDown 0.5s;
+    color: var(--secondary-color);
+}
+
+.rank-change {
+    display: flex;
+    align-items: center;
+}
+
+.rank-change i {
+    margin-right: 0.3rem;
+}
+
+@media (max-width: 992px) {
+    .leaderboard-cards {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .leaderboard-table th:nth-child(4),
+    .leaderboard-table td:nth-child(4) {
+        display: none;
+    }
+    
+    .leaderboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-dropdown {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .leaderboard-table th:nth-child(3),
+    .leaderboard-table td:nth-child(3) {
+        display: none;
+    }
+    
+    .leaderboard-cards {
+        grid-template-columns: 1fr;
+    }
+}

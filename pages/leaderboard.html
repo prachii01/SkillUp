@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #1a1c2c;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - SkillUp</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="floating-particles"></div>
+    
+    <nav class="game-nav">
+        <a href="../index.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            SkillUp
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="quiz.html">Quizzes</a></li>
+            <li><a href="#" class="active">Leaderboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <div class="user-stats">
+                <div class="level-badge">
+                    <span>LVL 1</span>
+                </div>
+                <div class="points">
+                    <i class="fas fa-star"></i>
+                    <span id="user-points">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="leaderboard-container">
+        <div class="leaderboard-header">
+            <h1 class="leaderboard-title">Hero Rankings</h1>
+            
+            <div class="filter-dropdown">
+                <div class="filter-btn">
+                    All Time <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-menu">
+                    <div class="filter-option active" data-filter="all-time">All Time</div>
+                    <div class="filter-option" data-filter="monthly">This Month</div>
+                    <div class="filter-option" data-filter="weekly">This Week</div>
+                    <div class="filter-option" data-filter="daily">Today</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="leaderboard-cards">
+            <div class="rank-card rank-silver">
+                <div class="rank-number">2</div>
+                <div class="rank-medal">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="rank-avatar">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h3 class="rank-name">Hero Silver</h3>
+                <div class="rank-stats">
+                    <div class="rank-points">
+                        <i class="fas fa-star"></i>
+                        <span>8750</span>
+                    </div>
+                    <div class="rank-badge">
+                        <i class="fas fa-award"></i>
+                        <span>8</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="rank-card rank-gold">
+                <div class="rank-number">1</div>
+                <div class="rank-medal">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="rank-avatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3 class="rank-name">Hero Gold</h3>
+                <div class="rank-stats">
+                    <div class="rank-points">
+                        <i class="fas fa-star"></i>
+                        <span>10250</span>
+                    </div>
+                    <div class="rank-badge">
+                        <i class="fas fa-award"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="rank-card rank-bronze">
+                <div class="rank-number">3</div>
+                <div class="rank-medal">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="rank-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="rank-name">Hero Bronze</h3>
+                <div class="rank-stats">
+                    <div class="rank-points">
+                        <i class="fas fa-star"></i>
+                        <span>6500</span>
+                    </div>
+                    <div class="rank-badge">
+                        <i class="fas fa-award"></i>
+                        <span>5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="full-leaderboard">
+            <h2 class="section-title">All Heroes</h2>
+            
+            <div class="leaderboard-table">
+                <div class="leaderboard-head">
+                    <div class="col-rank">Rank</div>
+                    <div class="col-player">Player</div>
+                    <div class="col-level">Level</div>
+                    <div class="col-points">Points</div>
+                    <div class="col-badges">Badges</div>
+                </div>
+                
+                <div class="leaderboard-body" id="leaderboard-list">
+                    <div class="leaderboard-row">
+                        <div class="col-rank">4</div>
+                        <div class="col-player">
+                            <div class="player-avatar"><i class="fas fa-user"></i></div>
+                            <span>SwordMaster</span>
+                        </div>
+                        <div class="col-level">8</div>
+                        <div class="col-points">5200</div>
+                        <div class="col-badges">4</div>
+                    </div>
+                    
+                    <div class="leaderboard-row">
+                        <div class="col-rank">5</div>
+                        <div class="col-player">
+                            <div class="player-avatar"><i class="fas fa-user"></i></div>
+                            <span>MagicWielder</span>
+                        </div>
+                        <div class="col-level">7</div>
+                        <div class="col-points">4800</div>
+                        <div class="col-badges">3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast-container"></div>
+    
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <script type="module">
+        import { auth, firestore } from '../js/config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const userPoints = document.getElementById('user-points');
+        const filterBtn = document.querySelector('.filter-btn');
+        const filterMenu = document.querySelector('.filter-menu');
+        const filterOptions = document.querySelectorAll('.filter-option');
+        
+        function showLoading() {
+            loadingSpinner.style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+        }
+        
+        function showToast(message, type = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            toast.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+        
+        filterBtn.addEventListener('click', () => {
+            filterMenu.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.filter-dropdown')) {
+                filterMenu.classList.remove('active');
+            }
+        });
+        
+        filterOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                filterOptions.forEach(opt => opt.classList.remove('active'));
+                
+                option.classList.add('active');
+                
+                filterBtn.innerHTML = `${option.textContent} <i class="fas fa-chevron-down"></i>`;
+                
+                filterMenu.classList.remove('active');
+                
+                loadLeaderboard(option.dataset.filter);
+            });
+        });
+        
+        async function loadLeaderboard(filter = 'all-time') {
+            showLoading();
+            
+            try {
+                const leaderboardQuery = query(
+                    collection(firestore, 'users'),
+                    orderBy('points', 'desc'),
+                    limit(50)
+                );
+                
+                const snapshot = await getDocs(leaderboardQuery);
+                
+                if (snapshot.empty) {
+                    showToast('No leaderboard data available yet', 'info');
+                    hideLoading();
+                    return;
+                }
+                
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+                showToast('Error loading leaderboard data', 'error');
+                hideLoading();
+            }
+        }
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userAvatar = document.querySelector('.avatar');
+                if (user.photoURL) {
+                    userAvatar.innerHTML = `<img src="${user.photoURL}" alt="User avatar">`;
+                } else if (user.displayName) {
+                    userAvatar.textContent = user.displayName.charAt(0);
+                }
+                
+                loadLeaderboard();
+            } else {
+                window.location.href = '../pages/login.html';
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const particles = document.querySelector('.floating-particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 6 + 2;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const animationDelay = Math.random() * 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                
+                const colors = ['#f1c40f', '#e74c3c', '#2ecc71', '#3498db', '#9b59b6'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = randomColor;
+                
+                particles.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes - SkillUp</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../css/quiz.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="floating-particles"></div>
+    
+    <nav class="game-nav">
+        <a href="../index.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            SkillUp
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#" class="active">Quizzes</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <div class="user-stats">
+                <div class="level-badge">
+                    <span>LVL 1</span>
+                </div>
+                <div class="points">
+                    <i class="fas fa-star"></i>
+                    <span>0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="quiz-header">
+            <h1>Choose a Quiz</h1>
+            <div class="username">User</div>
+        </div>
+        
+        <div class="quiz-categories">
+        </div>
+    </div>
+    
+    <div class="quiz-active">
+        <div class="container">
+            <div class="quiz-question-counter">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-progress">
+                    <div class="progress-filled"></div>
+                </div>
+                <div class="question-timer">
+                    <span class="timer-icon"><i class="fas fa-clock"></i></span>
+                    <span class="timer-countdown">30</span>
+                </div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">Question 1</div>
+                    <div class="question-text">What is the capital of France?</div>
+                </div>
+                
+                <div class="answer-options">
+                </div>
+                
+                <div class="quiz-actions">
+                    <button id="next-btn" class="btn btn-primary" disabled>Next Question</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quiz-results">
+        <div class="container">
+            <div class="results-header">
+                <h2 class="results-title">Great Job!</h2>
+                <div class="results-subtitle">You've completed the quiz</div>
+            </div>
+            
+            <div class="results-score">
+                <div class="score-circle">
+                    <div class="score-number">7/10</div>
+                    <div class="score-label">Correct Answers</div>
+                    <div class="score-percentage">70%</div>
+                </div>
+            </div>
+            
+            <div class="results-stats">
+                <div class="stat-card time-stat">
+                    <div class="stat-icon time-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">12s</div>
+                    <div class="stat-label">Avg. Time per Question</div>
+                </div>
+                
+                <div class="stat-card accuracy-stat">
+                    <div class="stat-icon accuracy-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                
+                <div class="stat-card streak-stat">
+                    <div class="stat-icon streak-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Best Streak</div>
+                </div>
+            </div>
+            
+            <div class="results-rewards">
+                <div class="rewards-header">
+                    <h3>Rewards Earned</h3>
+                </div>
+                
+                <div class="rewards-earned">
+                </div>
+            </div>
+            
+            <div class="results-actions">
+                <button id="retry-btn" class="btn btn-primary">Try Again</button>
+                <button id="home-btn" class="btn btn-outline">Back to Categories</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast-container"></div>
+    
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <script type="module" src="../js/quiz.js"></script>
+</body>
+</html>

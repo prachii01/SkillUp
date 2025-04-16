@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillup - Epic Learning Quest</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="game-body">
+    <div class="floating-particles"></div>
+    <nav class="game-hud">
+        <div class="hud-left">
+            <div class="player-stats">
+                <div class="player-level">
+                    <i class="fas fa-crown"></i>
+                    <span>LVL 1</span>
+                    <div class="level-progress">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="player-xp">
+                    <i class="fas fa-star"></i>
+                    <span>2400 XP</span>
+                </div>
+                <div class="player-streak">
+                    <i class="fas fa-fire"></i>
+                    <span>5 Day Streak</span>
+                </div>
+            </div>
+        </div>
+        <div class="hud-center">
+            <div class="game-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>SkillUp</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <a href="pages/profile.html" class="hud-btn">
+                <i class="fas fa-user-ninja"></i>
+                <span>Hero Stats</span>
+            </a>
+            <a href="pages/quiz.html" class="hud-btn pulse">
+                <i class="fas fa-scroll"></i>
+                <span>Quests</span>
+                <div class="quest-counter">5</div>
+            </a>
+            <div class="auth-buttons">
+                <a href="pages/login.html" class="btn btn-outline btn-glow">
+                    <i class="fas fa-sign-in-alt"></i> Join Battle
+                </a>
+                <a href="pages/signup.html" class="btn btn-primary btn-glow">
+                    <i class="fas fa-plus-circle"></i> Create Hero
+                </a>
+            </div>
+        </div>
+    </nav>
+    <main class="game-world">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="game-title">Begin Your Epic<br>Learning Quest</h1>
+                <div class="hero-achievements">
+                    <div class="achievement">
+                        <i class="fas fa-users"></i>
+                        <span>10K+ Heroes</span>
+                    </div>
+                    <div class="achievement">
+                        <i class="fas fa-star"></i>
+                        <span>500+ Quests</span>
+                    </div>
+                    <div class="achievement">
+                        <i class="fas fa-trophy"></i>
+                        <span>1M+ XP Earned</span>
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                    <a href="pages/login.html" class="btn btn-primary btn-large btn-glow">
+                        <i class="fas fa-play"></i> Start Your Journey
+                    </a>
+                    <a href="#quest-paths" class="btn btn-outline btn-large">
+                        <i class="fas fa-map-marked-alt"></i> View Quest Paths
+                    </a>
+                </div>
+            </div>
+        </div>
+        <section id="quest-paths" class="quest-paths">
+            <h2 class="section-title">Choose Your Path</h2>
+            <div class="path-cards">
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Code Warrior</h3>
+                    <div class="path-stats">
+                        <span><i class="fas fa-scroll"></i> 20 Quests</span>
+                        <span><i class="fas fa-star"></i> 5000 XP</span>
+                    </div>
+                    <p>Master the art of coding through interactive challenges</p>
+                    <a href="pages/quiz.html?path=code" class="btn btn-outline btn-glow">Begin Path</a>
+                </div>
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Math Master</h3>
+                    <div class="path-stats">
+                        <span><i class="fas fa-scroll"></i> 15 Quests</span>
+                        <span><i class="fas fa-star"></i> 4000 XP</span>
+                    </div>
+                    <p>Conquer mathematical challenges and puzzles</p>
+                    <a href="pages/quiz.html?path=math" class="btn btn-outline btn-glow">Begin Path</a>
+                </div>
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Science Sage</h3>
+                    <div class="path-stats">
+                        <span><i class="fas fa-scroll"></i> 18 Quests</span>
+                        <span><i class="fas fa-star"></i> 4500 XP</span>
+                    </div>
+                    <p>Explore the mysteries of science through experiments</p>
+                    <a href="pages/quiz.html?path=science" class="btn btn-outline btn-glow">Begin Path</a>
+                </div>
+            </div>
+        </section>
+        <section class="featured-quests">
+            <h2 class="section-title">Epic Quests Await</h2>
+            <div class="quest-cards">
+                <div class="quest-card">
+                    <div class="quest-difficulty legendary">
+                        <i class="fas fa-crown"></i> Legendary
+                    </div>
+                    <h3>Python Dragon Slayer</h3>
+                    <p>Defeat the mighty Python challenges and earn legendary rewards</p>
+                    <div class="quest-rewards">
+                        <span><i class="fas fa-star"></i> 1000 XP</span>
+                        <span><i class="fas fa-gem"></i> Rare Badge</span>
+                    </div>
+                    <a href="pages/quiz.html?quest=python" class="btn btn-primary btn-glow">Accept Quest</a>
+                </div>
+                <div class="quest-card">
+                    <div class="quest-difficulty epic">
+                        <i class="fas fa-fire"></i> Epic
+                    </div>
+                    <h3>Algorithm Arena</h3>
+                    <p>Battle through complex algorithms and prove your mastery</p>
+                    <div class="quest-rewards">
+                        <span><i class="fas fa-star"></i> 800 XP</span>
+                        <span><i class="fas fa-shield-alt"></i> Epic Title</span>
+                    </div>
+                    <a href="pages/quiz.html?quest=algorithms" class="btn btn-primary btn-glow">Accept Quest</a>
+                </div>
+            </div>
+        </section>
+        <section class="how-it-works">
+            <h2 class="section-title">Your Quest Journey</h2>
+            <div class="journey-steps">
+                <div class="journey-step">
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Create Your Hero</h3>
+                    <p>Join the ranks of knowledge seekers and begin your adventure</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Choose Your Path</h3>
+                    <p>Select from various quest paths that match your interests</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Complete Quests</h3>
+                    <p>Battle through challenges and earn experience points</p>
+                </div>
+                <div class="journey-step">
+                    <div class="step-icon">
+                        <i class="fas fa-level-up-alt"></i>
+                    </div>
+                    <h3>Level Up</h3>
+                    <p>Grow stronger and unlock new achievements and rewards</p>
+                </div>
+            </div>
+        </section>
+        <section class="leaderboard-preview">
+            <h2 class="section-title">Legendary Heroes</h2>
+            <div class="top-heroes">
+                <div class="hero-card champion">
+                    <div class="hero-rank">1</div>
+                    <div class="hero-avatar">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="hero-info">
+                        <h3>DragonSlayer92</h3>
+                        <div class="hero-stats">
+                            <span><i class="fas fa-star"></i> 25,000 XP</span>
+                            <span><i class="fas fa-trophy"></i> 150 Quests</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-rank">2</div>
+                    <div class="hero-avatar">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="hero-info">
+                        <h3>CodeMaster</h3>
+                        <div class="hero-stats">
+                            <span><i class="fas fa-star"></i> 23,500 XP</span>
+                            <span><i class="fas fa-trophy"></i> 140 Quests</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-rank">3</div>
+                    <div class="hero-avatar">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="hero-info">
+                        <h3>QuestHunter</h3>
+                        <div class="hero-stats">
+                            <span><i class="fas fa-star"></i> 22,000 XP</span>
+                            <span><i class="fas fa-trophy"></i> 135 Quests</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="pages/leaderboard.html" class="btn btn-outline btn-large">View All Heroes</a>
+        </section>
+        <section class="call-to-adventure">
+            <div class="adventure-content">
+                <h2>Ready to Begin Your Quest?</h2>
+                <p>Join thousands of heroes in their journey to master new skills</p>
+                <div class="adventure-cta">
+                    <a href="pages/signup.html" class="btn btn-primary btn-large btn-glow">
+                        <i class="fas fa-shield-alt"></i> Create Your Hero
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="leaderboard">
+            <h2 class="section-title">Hall of Champions</h2>
+            <div class="leaderboard-table">
+                <div class="leaderboard-header">
+                    <span>Rank</span>
+                    <span>Hero</span>
+                    <span>Level</span>
+                    <span>XP</span>
+                </div>
+                <div class="leaderboard-row">
+                    <span class="rank">1</span>
+                    <span class="hero-name"><i class="fas fa-crown"></i> CodeMaster</span>
+                    <span class="level">30</span>
+                    <span class="xp">15,000</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        const particles = document.querySelector('.floating-particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            particle.style.animationDelay = (Math.random() * 2) + 's';
+            particles.appendChild(particle);
+        }
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            bar.style.width = bar.parentElement.getAttribute('data-progress') + '%';
+        });
+    </script>
+</body>
+</html>
