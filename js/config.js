@@ -1,10 +1,9 @@
-// Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { getFirestore, collection } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getDatabase, ref } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAUKoe1HYnPegyvE5TCTIqiSMuUTmsNDf4",
     authDomain: "skillup-20e96.firebaseapp.com",
@@ -12,25 +11,28 @@ const firebaseConfig = {
     storageBucket: "skillup-20e96.firebasestorage.app",
     messagingSenderId: "113191325506",
     appId: "1:113191325506:web:1adeb457a43d8c3ffc82db",
-    measurementId: "G-YMQSC8SF7Z"
+    measurementId: "G-YMQSC8SF7Z",
+    databaseURL: "https://skillup-20e96-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getDatabase(app);
+const firestore = getFirestore(app);
 const analytics = getAnalytics(app);
 
-// Firestore collections references
-const usersCollection = collection(db, 'users');
-const quizzesCollection = collection(db, 'quizzes');
-const leaderboardCollection = collection(db, 'leaderboard');
+const usersRef = ref(db, 'users');
+const quizzesRef = ref(db, 'quizzes');
+const leaderboardRef = ref(db, 'leaderboard');
+const badgesRef = ref(db, 'badges');
 
 export { 
     auth, 
-    db, 
+    db,
+    firestore,
     analytics,
-    usersCollection,
-    quizzesCollection,
-    leaderboardCollection
+    usersRef,
+    quizzesRef,
+    leaderboardRef,
+    badgesRef
 };
