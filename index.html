@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillUp - Epic Learning Quest</title>
+    <title>Skillup - Epic Learning Quest</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="game-body">
     <div class="floating-particles"></div>
-    
-    <!-- Game HUD (Heads Up Display) Navigation -->
     <nav class="game-hud">
         <div class="hud-left">
             <div class="player-stats">
@@ -57,8 +56,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Main Game World -->
     <main class="game-world">
         <div class="hero-section">
             <div class="hero-content">
@@ -78,7 +75,7 @@
                     </div>
                 </div>
                 <div class="cta-buttons">
-                    <a href="pages/signup.html" class="btn btn-primary btn-large btn-glow">
+                    <a href="pages/login.html" class="btn btn-primary btn-large btn-glow">
                         <i class="fas fa-play"></i> Start Your Journey
                     </a>
                     <a href="#quest-paths" class="btn btn-outline btn-large">
@@ -87,8 +84,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Quest Paths -->
         <section id="quest-paths" class="quest-paths">
             <h2 class="section-title">Choose Your Path</h2>
             <div class="path-cards">
@@ -130,8 +125,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Featured Quests -->
         <section class="featured-quests">
             <h2 class="section-title">Epic Quests Await</h2>
             <div class="quest-cards">
@@ -161,8 +154,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- How It Works -->
         <section class="how-it-works">
             <h2 class="section-title">Your Quest Journey</h2>
             <div class="journey-steps">
@@ -196,8 +187,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Leaderboard Preview -->
         <section class="leaderboard-preview">
             <h2 class="section-title">Legendary Heroes</h2>
             <div class="top-heroes">
@@ -243,8 +232,6 @@
             </div>
             <a href="pages/leaderboard.html" class="btn btn-outline btn-large">View All Heroes</a>
         </section>
-
-        <!-- Call to Adventure -->
         <section class="call-to-adventure">
             <div class="adventure-content">
                 <h2>Ready to Begin Your Quest?</h2>
@@ -256,8 +243,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Leaderboard Section -->
         <section class="leaderboard">
             <h2 class="section-title">Hall of Champions</h2>
             <div class="leaderboard-table">
@@ -273,13 +258,10 @@
                     <span class="level">30</span>
                     <span class="xp">15,000</span>
                 </div>
-                <!-- Add more leaderboard rows -->
             </div>
         </section>
     </main>
-
     <script>
-        // Create floating particles
         const particles = document.querySelector('.floating-particles');
         for (let i = 0; i < 50; i++) {
             const particle = document.createElement('div');
@@ -289,8 +271,6 @@
             particle.style.animationDelay = (Math.random() * 2) + 's';
             particles.appendChild(particle);
         }
-
-        // Animate progress bars
         document.querySelectorAll('.progress-bar').forEach(bar => {
             bar.style.width = bar.parentElement.getAttribute('data-progress') + '%';
         });

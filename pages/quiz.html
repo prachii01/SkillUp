@@ -4,97 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quizzes - SkillUp</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../css/quiz.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-brand">
+    <div class="floating-particles"></div>
+    
+    <nav class="game-nav">
+        <a href="../index.html" class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <a href="../index.html">SkillUp</a>
-        </div>
-        <div class="nav-links">
-            <a href="../index.html">Home</a>
-            <a href="quiz.html" class="active">Quizzes</a>
-            <a href="profile.html">Profile</a>
-            <span id="userPoints">0 pts</span>
+            SkillUp
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#" class="active">Quizzes</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <div class="user-stats">
+                <div class="level-badge">
+                    <span>LVL 1</span>
+                </div>
+                <div class="points">
+                    <i class="fas fa-star"></i>
+                    <span>0</span>
+                </div>
+            </div>
         </div>
     </nav>
-
-    <!-- Quiz Section -->
-    <div class="quiz-container">
-        <!-- Quiz List View -->
-        <section id="quizList" class="quiz-list">
-            <h2>Available Quizzes</h2>
-            <div class="quiz-filters">
-                <select id="topicFilter">
-                    <option value="">All Topics</option>
-                    <option value="math">Mathematics</option>
-                    <option value="science">Science</option>
-                    <option value="history">History</option>
-                </select>
-                <select id="difficultyFilter">
-                    <option value="">All Difficulties</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </div>
-            <div class="quiz-grid" id="quizGrid">
-                <!-- Quiz cards will be dynamically added here -->
-            </div>
-        </section>
-
-        <!-- Active Quiz View -->
-        <section id="activeQuiz" class="active-quiz hidden">
-            <div class="quiz-header">
-                <h2 id="quizTitle"></h2>
-                <div class="quiz-info">
-                    <span id="questionNumber"></span>
-                    <div id="timer" class="timer">
-                        <i class="fas fa-clock"></i>
-                        <span>00:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="question-container">
-                <p id="questionText"></p>
-                <div id="options" class="options-grid">
-                    <!-- Options will be dynamically added here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Quiz Results View -->
-        <section id="quizResults" class="quiz-results hidden">
-            <div class="results-card">
-                <h2>Quiz Complete!</h2>
-                <div class="score-display">
-                    <div class="score-circle">
-                        <span id="scorePercentage">0%</span>
-                    </div>
-                </div>
-                <div class="results-details">
-                    <p>Correct Answers: <span id="correctAnswers">0</span></p>
-                    <p>Time Taken: <span id="timeTaken">0:00</span></p>
-                    <p>Points Earned: <span id="pointsEarned">0</span></p>
-                </div>
-                <div class="results-actions">
-                    <button class="btn btn-primary" onclick="retryQuiz()">Try Again</button>
-                    <button class="btn btn-secondary" onclick="returnToQuizList()">Back to Quizzes</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore-compat.js"></script>
     
-    <!-- App Scripts -->
-    <script src="../js/config.js"></script>
-    <script src="../js/quiz.js"></script>
+    <div class="container">
+        <div class="quiz-header">
+            <h1>Choose a Quiz</h1>
+            <div class="username">User</div>
+        </div>
+        
+        <div class="quiz-categories">
+        </div>
+    </div>
+    
+    <div class="quiz-active">
+        <div class="container">
+            <div class="quiz-question-counter">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-progress">
+                    <div class="progress-filled"></div>
+                </div>
+                <div class="question-timer">
+                    <span class="timer-icon"><i class="fas fa-clock"></i></span>
+                    <span class="timer-countdown">30</span>
+                </div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">Question 1</div>
+                    <div class="question-text">What is the capital of France?</div>
+                </div>
+                
+                <div class="answer-options">
+                </div>
+                
+                <div class="quiz-actions">
+                    <button id="next-btn" class="btn btn-primary" disabled>Next Question</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quiz-results">
+        <div class="container">
+            <div class="results-header">
+                <h2 class="results-title">Great Job!</h2>
+                <div class="results-subtitle">You've completed the quiz</div>
+            </div>
+            
+            <div class="results-score">
+                <div class="score-circle">
+                    <div class="score-number">7/10</div>
+                    <div class="score-label">Correct Answers</div>
+                    <div class="score-percentage">70%</div>
+                </div>
+            </div>
+            
+            <div class="results-stats">
+                <div class="stat-card time-stat">
+                    <div class="stat-icon time-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">12s</div>
+                    <div class="stat-label">Avg. Time per Question</div>
+                </div>
+                
+                <div class="stat-card accuracy-stat">
+                    <div class="stat-icon accuracy-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                
+                <div class="stat-card streak-stat">
+                    <div class="stat-icon streak-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Best Streak</div>
+                </div>
+            </div>
+            
+            <div class="results-rewards">
+                <div class="rewards-header">
+                    <h3>Rewards Earned</h3>
+                </div>
+                
+                <div class="rewards-earned">
+                </div>
+            </div>
+            
+            <div class="results-actions">
+                <button id="retry-btn" class="btn btn-primary">Try Again</button>
+                <button id="home-btn" class="btn btn-outline">Back to Categories</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast-container"></div>
+    
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <script type="module" src="../js/quiz.js"></script>
 </body>
 </html>
