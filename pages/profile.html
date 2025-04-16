@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SkillUp</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="floating-particles"></div>
+    
+    <nav class="game-nav">
+        <a href="../index.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            SkillUp
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="quiz.html">Quizzes</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="#" class="active">Profile</a></li>
+        </ul>
+        
+        <div class="user-info">
+            <div class="avatar">A</div>
+            <div class="user-stats">
+                <div class="level-badge">
+                    <span>LVL 1</span>
+                </div>
+                <div class="points">
+                    <i class="fas fa-star"></i>
+                    <span>0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="profile-container">
+        <div class="user-profile-card">
+            <div class="profile-avatar">
+                <div class="profile-level-badge">1</div>
+            </div>
+            
+            <h2 class="profile-username">Username</h2>
+            <div class="profile-email">user@example.com</div>
+            
+            <div class="profile-stats">
+                <div class="profile-stat points-stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Points</div>
+                </div>
+                
+                <div class="profile-stat quizzes-stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Quizzes</div>
+                </div>
+                
+                <div class="profile-stat badges-stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Badges</div>
+                </div>
+            </div>
+            
+            <button id="logout-btn" class="btn btn-outline profile-edit-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="profile-content">
+            <div class="profile-tabs">
+                <div class="profile-tab active" data-tab="achievements-tab">Achievements</div>
+                <div class="profile-tab" data-tab="badges-tab">Badges</div>
+                <div class="profile-tab" data-tab="history-tab">Quiz History</div>
+            </div>
+            
+            <div id="achievements-tab" class="profile-tab-content active">
+                <div class="achievements-grid">
+                </div>
+            </div>
+            
+            <div id="badges-tab" class="profile-tab-content">
+                <div class="badges-grid">
+                </div>
+            </div>
+            
+            <div id="history-tab" class="profile-tab-content">
+                <div class="history-list">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast-container"></div>
+    
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <script type="module" src="../js/profile.js"></script>
+</body>
+</html>
