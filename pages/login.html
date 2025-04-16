@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #1a1c2c;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Skillup</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <nav class="game-hud">
+        <div class="hud-left">
+            <div class="player-stats">
+                <div class="player-level">
+                    <i class="fas fa-crown"></i>
+                    <span>Join Quest</span>
+                </div>
+            </div>
+        </div>
+        <div class="hud-center">
+            <div class="game-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>SkillUp</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <a href="../index.html" class="hud-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="quiz.html" class="hud-btn">
+                <i class="fas fa-scroll"></i>
+                <span>Quests</span>
+            </a>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline btn-glow active">
+                    <i class="fas fa-sign-in-alt"></i> Join Battle
+                </a>
+                <a href="signup.html" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Create Hero
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="game-world">
+            <div class="floating-elements">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-graduation-cap"></i>
+                <i class="fas fa-trophy"></i>
+                <i class="fas fa-crown"></i>
+                <i class="fas fa-medal"></i>
+            </div>
+        </div>
+        <div class="auth-card">
+            <div class="level-indicator">
+                <div class="level-badge">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Level 1</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+            </div>
+            <h2>Welcome Back, Adventurer!</h2>
+            <p class="quest-text">Complete this quest to continue your learning journey</p>
+            <div id="errorMessage" class="error-message hidden"></div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                </div>
+                <div class="form-group achievement">
+                    <div class="achievement-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="form-input">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-glow">
+                    <i class="fas fa-door-open"></i>
+                    Enter the Academy
+                </button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Choose Your Path</span>
+            </div>
+            
+            <button id="googleSignIn" class="btn btn-google btn-glow">
+                <i class="fab fa-google"></i>
+                Join with Google
+            </button>
+            
+            <div class="auth-links">
+                <a href="forgot-password.html" class="quest-link">
+                    <i class="fas fa-scroll"></i>
+                    Lost Your Spell (Password)?
+                </a>
+                <p>New to the Academy? 
+                    <a href="signup.html" class="quest-link">
+                        <i class="fas fa-wand-sparkles"></i>
+                        Begin Your Journey
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loader"></div>
+        <p class="loading-text">Preparing your journey...</p>
+    </div>
+
+    <script type="module">
+        import { auth, firestore } from '../js/config.js';
+        import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+        const loginForm = document.getElementById('loginForm');
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressBar = document.querySelector('.progress');
+        const googleProvider = new GoogleAuthProvider();
+
+        const showLoading = () => {
+            loadingOverlay.classList.remove('hidden');
+            progressBar.style.width = '30%';
+            setTimeout(() => {
+                progressBar.style.width = '60%';
+            }, 500);
+        };
+
+        const hideLoading = () => {
+            progressBar.style.width = '100%';
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+                progressBar.style.width = '0%';
+            }, 500);
+        };
+
+        const showError = (message) => {
+            errorMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            errorMessage.classList.remove('hidden');
+            errorMessage.classList.add('shake');
+            setTimeout(() => {
+                errorMessage.classList.remove('shake');
+                setTimeout(() => {
+                    errorMessage.classList.add('hidden');
+                }, 500);
+            }, 500);
+        };
+
+        const createUserProfile = async (userId, userData) => {
+            const userRef = doc(firestore, 'users', userId);
+            const userSnap = await getDoc(userRef);
+            
+            if (!userSnap.exists()) {
+                await setDoc(userRef, {
+                    ...userData,
+                    createdAt: new Date().toISOString(),
+                    points: 0,
+                    level: 1,
+                    quizzesTaken: 0,
+                    badges: ['newcomer']
+                });
+            }
+        };
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading();
+
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                await createUserProfile(userCredential.user.uid, {
+                    email: userCredential.user.email,
+                    displayName: userCredential.user.displayName
+                });
+                
+                window.location.href = 'profile.html';
+            } catch (error) {
+                hideLoading();
+                showError(error.message);
+            }
+        });
+
+        googleSignInBtn.addEventListener('click', async () => {
+            showLoading();
+            
+            try {
+                showError("Domain not authorized by Firebase. Use email login or add localhost to your Firebase auth domains");
+                hideLoading();
+                
+                googleProvider.addScope('profile');
+                googleProvider.addScope('email');
+                googleProvider.setCustomParameters({
+                    prompt: 'select_account'
+                });
+                
+                const result = await signInWithPopup(auth, googleProvider);
+                
+                if (result.user) {
+                    await createUserProfile(result.user.uid, {
+                        email: result.user.email,
+                        displayName: result.user.displayName || 'Hero',
+                        photoURL: result.user.photoURL,
+                        lastLogin: new Date().toISOString()
+                    });
+                    
+                    window.location.href = 'profile.html';
+                } else {
+                    throw new Error('Google sign-in failed. Try again?');
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Google Sign In Error:', error);
+                
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showError('Sign-in cancelled. Give it another shot?');
+                } else if (error.code === 'auth/popup-blocked') {
+                    showError('Pop-up blocked. Allow popups for this site!');
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    showError('Domain not set up. Use email login for now.');
+                } else {
+                    showError(error.message || 'Google login failed. Try again?');
+                }
+            }
+        });
+
+        const floatingElements = document.querySelectorAll('.floating-elements i');
+        floatingElements.forEach((element, index) => {
+            element.style.animation = `float 3s ease-in-out ${index * 0.5}s infinite`;
+        });
+    </script>
+</body>
+</html>
