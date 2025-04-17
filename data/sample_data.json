@@ -1,0 +1,180 @@
+{
+  "categories": {
+    "cat1": {
+      "name": "General Knowledge",
+      "icon": "fa-brain",
+      "difficulty": "Easy",
+      "questionCount": 10
+    },
+    "cat2": {
+      "name": "Science",
+      "icon": "fa-flask",
+      "difficulty": "Medium",
+      "questionCount": 10
+    },
+    "cat3": {
+      "name": "History",
+      "icon": "fa-landmark",
+      "difficulty": "Hard",
+      "questionCount": 10
+    }
+  },
+  "questions": {
+    "cat1": {
+      "q1": {
+        "question": "What is the capital of France?",
+        "correctAnswer": "Paris",
+        "incorrectAnswers": ["London", "Berlin", "Madrid"]
+      },
+      "q2": {
+        "question": "Which planet is known as the Red Planet?",
+        "correctAnswer": "Mars",
+        "incorrectAnswers": ["Venus", "Jupiter", "Mercury"]
+      },
+      "q3": {
+        "question": "What is the largest ocean on Earth?",
+        "correctAnswer": "Pacific Ocean",
+        "incorrectAnswers": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"]
+      },
+      "q4": {
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "correctAnswer": "William Shakespeare",
+        "incorrectAnswers": ["Charles Dickens", "Jane Austen", "Mark Twain"]
+      },
+      "q5": {
+        "question": "What is the chemical symbol for gold?",
+        "correctAnswer": "Au",
+        "incorrectAnswers": ["Ag", "Fe", "Cu"]
+      },
+      "q6": {
+        "question": "Which country is known as the Land of the Rising Sun?",
+        "correctAnswer": "Japan",
+        "incorrectAnswers": ["China", "Thailand", "South Korea"]
+      },
+      "q7": {
+        "question": "What is the largest mammal on Earth?",
+        "correctAnswer": "Blue Whale",
+        "incorrectAnswers": ["African Elephant", "Giraffe", "Polar Bear"]
+      },
+      "q8": {
+        "question": "In which year did World War II end?",
+        "correctAnswer": "1945",
+        "incorrectAnswers": ["1939", "1942", "1950"]
+      },
+      "q9": {
+        "question": "What is the main ingredient in guacamole?",
+        "correctAnswer": "Avocado",
+        "incorrectAnswers": ["Tomato", "Cucumber", "Onion"]
+      },
+      "q10": {
+        "question": "Who painted the Mona Lisa?",
+        "correctAnswer": "Leonardo da Vinci",
+        "incorrectAnswers": ["Pablo Picasso", "Vincent van Gogh", "Michelangelo"]
+      }
+    },
+    "cat2": {
+      "q1": {
+        "question": "What is the chemical symbol for water?",
+        "correctAnswer": "H2O",
+        "incorrectAnswers": ["CO2", "O2", "NaCl"]
+      },
+      "q2": {
+        "question": "What is the hardest natural substance on Earth?",
+        "correctAnswer": "Diamond",
+        "incorrectAnswers": ["Titanium", "Platinum", "Gold"]
+      },
+      "q3": {
+        "question": "Which planet has the most moons?",
+        "correctAnswer": "Saturn",
+        "incorrectAnswers": ["Jupiter", "Uranus", "Neptune"]
+      },
+      "q4": {
+        "question": "What is the smallest unit of matter?",
+        "correctAnswer": "Atom",
+        "incorrectAnswers": ["Cell", "Molecule", "Electron"]
+      },
+      "q5": {
+        "question": "What force keeps us on the ground?",
+        "correctAnswer": "Gravity",
+        "incorrectAnswers": ["Magnetism", "Friction", "Tension"]
+      },
+      "q6": {
+        "question": "What is the speed of light?",
+        "correctAnswer": "299,792,458 meters per second",
+        "incorrectAnswers": ["150,000,000 meters per second", "500,000,000 meters per second", "200,000,000 meters per second"]
+      },
+      "q7": {
+        "question": "Which element has the chemical symbol 'Fe'?",
+        "correctAnswer": "Iron",
+        "incorrectAnswers": ["Gold", "Silver", "Copper"]
+      },
+      "q8": {
+        "question": "What is the largest organ in the human body?",
+        "correctAnswer": "Skin",
+        "incorrectAnswers": ["Liver", "Heart", "Brain"]
+      },
+      "q9": {
+        "question": "What is the process by which plants make their food?",
+        "correctAnswer": "Photosynthesis",
+        "incorrectAnswers": ["Respiration", "Digestion", "Osmosis"]
+      },
+      "q10": {
+        "question": "What is the name of the galaxy we live in?",
+        "correctAnswer": "Milky Way",
+        "incorrectAnswers": ["Andromeda", "Triangulum", "Whirlpool"]
+      }
+    },
+    "cat3": {
+      "q1": {
+        "question": "Who was the first President of the United States?",
+        "correctAnswer": "George Washington",
+        "incorrectAnswers": ["Thomas Jefferson", "Abraham Lincoln", "John Adams"]
+      },
+      "q2": {
+        "question": "In which year did World War I begin?",
+        "correctAnswer": "1914",
+        "incorrectAnswers": ["1918", "1939", "1945"]
+      },
+      "q3": {
+        "question": "Who was the first person to step on the moon?",
+        "correctAnswer": "Neil Armstrong",
+        "incorrectAnswers": ["Buzz Aldrin", "Yuri Gagarin", "Alan Shepard"]
+      },
+      "q4": {
+        "question": "Which ancient civilization built the pyramids?",
+        "correctAnswer": "Egyptians",
+        "incorrectAnswers": ["Greeks", "Romans", "Mayans"]
+      },
+      "q5": {
+        "question": "Who wrote the Declaration of Independence?",
+        "correctAnswer": "Thomas Jefferson",
+        "incorrectAnswers": ["George Washington", "Benjamin Franklin", "John Adams"]
+      },
+      "q6": {
+        "question": "In which year did the Berlin Wall fall?",
+        "correctAnswer": "1989",
+        "incorrectAnswers": ["1991", "1985", "1975"]
+      },
+      "q7": {
+        "question": "Who was the first female Prime Minister of the United Kingdom?",
+        "correctAnswer": "Margaret Thatcher",
+        "incorrectAnswers": ["Queen Elizabeth II", "Theresa May", "Queen Victoria"]
+      },
+      "q8": {
+        "question": "Which empire was ruled by Genghis Khan?",
+        "correctAnswer": "Mongol Empire",
+        "incorrectAnswers": ["Roman Empire", "Ottoman Empire", "Persian Empire"]
+      },
+      "q9": {
+        "question": "Which year did the Titanic sink?",
+        "correctAnswer": "1912",
+        "incorrectAnswers": ["1905", "1920", "1931"]
+      },
+      "q10": {
+        "question": "Who painted the Sistine Chapel ceiling?",
+        "correctAnswer": "Michelangelo",
+        "incorrectAnswers": ["Leonardo da Vinci", "Raphael", "Donatello"]
+      }
+    }
+  }
+}
