@@ -35,20 +35,30 @@ onAuthStateChanged(auth, (user) => {
 function loadLeaderboard() {
     const leaderboardQuery = query(leaderboardRef, orderByChild('points'), limitToLast(50));
     
-    onValue(leaderboardQuery, (snapshot) => {
-        const data = snapshot.val();
-        
-        if (data) {
-            leaderboardData = Object.entries(data).map(([key, value]) => ({
-                uid: key,
-                ...value
-            })).sort((a, b) => b.points - a.points);
+    try {
+        onValue(leaderboardQuery, (snapshot) => {
+            const data = snapshot.val();
             
-            filterLeaderboard(currentFilter);
-        } else {
+            if (data) {
+                leaderboardData = Object.entries(data).map(([key, value]) => ({
+                    uid: key,
+                    ...value
+                })).sort((a, b) => b.points - a.points);
+                
+                filterLeaderboard(currentFilter);
+            } else {
+                handleEmptyLeaderboard();
+            }
+        }, (error) => {
+            console.error('Firebase read failed:', error);
+            showToast('Error loading leaderboard data', 'error');
             handleEmptyLeaderboard();
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error in loadLeaderboard:', error);
+        showToast('Error loading leaderboard data', 'error');
+        handleEmptyLeaderboard();
+    }
 }
 
 function filterLeaderboard(filter) {
