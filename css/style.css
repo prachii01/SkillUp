@@ -13,6 +13,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body.game-body {
@@ -505,10 +506,147 @@ body.game-body {
     font-size: 1.1rem;
 }
 
+/* Hamburger Menu Styles */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 200;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: rgba(26, 28, 44, 0.98);
+    backdrop-filter: blur(10px);
+    z-index: 150;
+    padding-top: 80px;
+    transition: left 0.3s ease;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+.mobile-nav-overlay, .mobile-nav {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .mobile-nav-overlay,
+  .mobile-nav {
+    display: block;
+  }
+  .mobile-nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    background: #212c3a;
+    z-index: 1002;
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.18);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    padding-bottom: 16px;
+  }
+  .mobile-nav-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 1001;
+  }
+}
+
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 140;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav-links li {
+    margin-bottom: 1rem;
+}
+
+.mobile-nav-links a {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-links a i {
+    margin-right: 1rem;
+    color: var(--primary-color);
+}
+
+.mobile-nav-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
 @media (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+    
     .game-hud {
         padding: 1rem;
-        flex-wrap: wrap;
     }
 
     .player-stats {
