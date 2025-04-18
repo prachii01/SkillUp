@@ -47,20 +47,26 @@
             <h2 class="profile-username">Username</h2>
             <div class="profile-email">user@example.com</div>
             
-            <div class="profile-stats">
-                <div class="profile-stat points-stat">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-scroll"></i>
                     <div class="stat-value">0</div>
-                    <div class="stat-label">Points</div>
+                    <div class="stat-label">Quizzes Taken</div>
                 </div>
-                
-                <div class="profile-stat quizzes-stat">
-                    <div class="stat-value">0</div>
-                    <div class="stat-label">Quizzes</div>
+                <div class="stat-card">
+                    <i class="fas fa-bullseye"></i>
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Accuracy</div>
                 </div>
-                
-                <div class="profile-stat badges-stat">
+                <div class="stat-card">
+                    <i class="fas fa-fire"></i>
                     <div class="stat-value">0</div>
-                    <div class="stat-label">Badges</div>
+                    <div class="stat-label">Best Streak</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-crown"></i>
+                    <div class="stat-value">Novice</div>
+                    <div class="stat-label">Current Rank</div>
                 </div>
             </div>
             
@@ -71,23 +77,49 @@
         
         <div class="profile-content">
             <div class="profile-tabs">
-                <div class="profile-tab active" data-tab="achievements-tab">Achievements</div>
+                <div class="profile-tab active" data-tab="history-tab">Quiz History</div>
+                <div class="profile-tab" data-tab="categories-tab">Categories</div>
+                <div class="profile-tab" data-tab="achievements-tab">Achievements</div>
                 <div class="profile-tab" data-tab="badges-tab">Badges</div>
-                <div class="profile-tab" data-tab="history-tab">Quiz History</div>
             </div>
             
-            <div id="achievements-tab" class="profile-tab-content active">
+            <div id="history-tab" class="profile-tab-content active">
+                <h3 class="section-title">Quiz History</h3>
+                <div class="history-list">
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>No quiz history yet. Start taking quizzes to see your progress!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="categories-tab" class="profile-tab-content">
+                <h3 class="section-title">Category Progress</h3>
+                <div class="categories-grid">
+                    <div class="empty-state">
+                        <i class="fas fa-folder"></i>
+                        <p>No category progress yet. Try different quiz categories!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="achievements-tab" class="profile-tab-content">
+                <h3 class="section-title">Achievements</h3>
                 <div class="achievements-grid">
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <p>No achievements yet. Keep playing to unlock them!</p>
+                    </div>
                 </div>
             </div>
             
             <div id="badges-tab" class="profile-tab-content">
+                <h3 class="section-title">Badges</h3>
                 <div class="badges-grid">
-                </div>
-            </div>
-            
-            <div id="history-tab" class="profile-tab-content">
-                <div class="history-list">
+                    <div class="empty-state">
+                        <i class="fas fa-award"></i>
+                        <p>No badges earned yet. Complete achievements to earn badges!</p>
+                    </div>
                 </div>
             </div>
         </div>
