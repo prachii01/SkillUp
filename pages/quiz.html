@@ -36,6 +36,7 @@
                 </div>
             </div>
         </div>
+
     </nav>
     
     <div class="container">
@@ -141,5 +142,51 @@
     </div>
     
     <script type="module" src="../js/quiz.js"></script>
+<script type="module">
+import { auth, db } from '../js/config.js';
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userRef = ref(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            if (!userData) {
+                console.error('[Navbar Update] No user data found for user:', user.uid);
+                throw new Error('[Navbar Update] No user data found for user: ' + user.uid);
+            }
+            console.log('[Navbar Update] userData:', userData);
+            const levelBadge = document.querySelector('.level-badge span');
+            if (!levelBadge) {
+                console.error('[Navbar Update] .level-badge span not found in DOM');
+                throw new Error('[Navbar Update] .level-badge span not found in DOM');
+            }
+            levelBadge.textContent = `LVL ${userData.level || 1}`;
+            const points = document.querySelector('.points span');
+            if (!points) {
+                console.error('[Navbar Update] .points span not found in DOM');
+                throw new Error('[Navbar Update] .points span not found in DOM');
+            }
+            points.textContent = userData.totalPoints || userData.points || 0;
+            const avatar = document.querySelector('.avatar');
+            if (!avatar) {
+                console.error('[Navbar Update] .avatar not found in DOM');
+                throw new Error('[Navbar Update] .avatar not found in DOM');
+            }
+            if (userData.photoURL) {
+                avatar.innerHTML = `<img src="${userData.photoURL}" alt="User avatar">`;
+            } else if (userData.displayName) {
+                avatar.textContent = userData.displayName.charAt(0);
+            }
+        }, (error) => {
+            console.error('[Navbar Update] Firebase onValue error:', error);
+            throw error;
+        });
+    } else {
+        console.error('[Navbar Update] No authenticated user');
+        throw new Error('[Navbar Update] No authenticated user');
+    }
+});
+</script>
 </body>
 </html>
