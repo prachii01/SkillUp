@@ -59,14 +59,35 @@ async function createUserProfile(uid, userData) {
         
         if (!snapshot.exists()) {
             await set(userRef, {
+                // Basic Info
                 email: userData.email,
                 displayName: userData.displayName || 'Anonymous',
                 photoURL: userData.photoURL || null,
                 createdAt: new Date().toISOString(),
+                lastActive: new Date().toISOString(),
+                
+                // Progress Stats
                 level: 1,
-                points: 0,
+                totalPoints: 0,
                 quizzesTaken: 0,
-                badges: ['newcomer']
+                totalCorrectAnswers: 0,
+                accuracy: 0,
+                bestStreak: 0,
+                currentStreak: 0,
+                
+                // Collections
+                badges: {
+                    newcomer: { earned: true, date: new Date().toISOString() }
+                },
+                achievements: {},
+                quizHistory: {},
+                categoryProgress: {},
+                
+                // Leaderboard Stats
+                weeklyPoints: 0,
+                monthlyPoints: 0,
+                allTimePoints: 0,
+                rank: 'Novice'
             });
         }
         

@@ -136,9 +136,9 @@
     </div>
 
     <script type="module">
-        import { auth, firestore } from '../js/config.js';
-        import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { auth, db } from '../js/config.js';
+        import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { ref, set, get, update } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
         const signupForm = document.getElementById('signupForm');
         const googleSignInBtn = document.getElementById('googleSignIn');
@@ -175,59 +175,122 @@
             }, 500);
         };
 
-        const createUserProfile = async (userId, userData) => {
-            const userRef = doc(firestore, 'users', userId);
-            await setDoc(userRef, {
-                ...userData,
-                createdAt: new Date().toISOString(),
-                points: 0,
-                level: 1,
-                quizzesTaken: 0,
-                badges: ['newcomer'],
-                achievements: []
-            });
-        };
+        async function createUserProfile(userId, userData) {
+            try {
+                const userRef = ref(db, `users/${userId}`);
+                
+                const snapshot = await get(userRef);
+                
+                if (!snapshot.exists()) {
+                    await set(userRef, {
+                        // Basic Info
+                        email: userData.email,
+                        displayName: userData.displayName || 'Anonymous',
+                        photoURL: userData.photoURL || null,
+                        createdAt: new Date().toISOString(),
+                        lastActive: new Date().toISOString(),
+                        
+                        // Progress Stats
+                        level: 1,
+                        totalPoints: 0,
+                        quizzesTaken: 0,
+                        totalCorrectAnswers: 0,
+                        accuracy: 0,
+                        bestStreak: 0,
+                        currentStreak: 0,
+                        
+                        // Collections
+                        badges: {
+                            newcomer: { earned: true, date: new Date().toISOString() }
+                        },
+                        achievements: {},
+                        quizHistory: {},
+                        categoryProgress: {},
+                        
+                        // Leaderboard Stats
+                        weeklyPoints: 0,
+                        monthlyPoints: 0,
+                        allTimePoints: 0,
+                        rank: 'Novice'
+                    });
+                    
+                    // Also update leaderboard
+                    const leaderboardRef = ref(db, `leaderboard/${userId}`);
+                    await set(leaderboardRef, {
+                        displayName: userData.displayName || 'Anonymous',
+                        photoURL: userData.photoURL || null,
+                        points: 0,
+                        level: 1,
+                        lastUpdated: new Date().toISOString()
+                    });
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error creating user profile:', error);
+                throw error;
+            }
+        }
 
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             showLoading();
-
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                hideLoading();
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            if (password.length < 6) {
-                hideLoading();
-                showError('Your spell is too weak! Password must be at least 6 characters long.');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                hideLoading();
-                showError('Your spells do not match! Try casting them again.');
-                return;
-            }
-
+            
             try {
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Form validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    throw new Error('Please enter a valid email address');
+                }
+                
+                if (password !== confirmPassword) {
+                    throw new Error('Passwords do not match');
+                }
+                
+                if (password.length < 6) {
+                    throw new Error('Password must be at least 6 characters');
+                }
+                
+                // Create user in Firebase Auth
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await createUserProfile(userCredential.user.uid, {
-                    username,
-                    email: userCredential.user.email,
+                const user = userCredential.user;
+                
+                // Update the user profile in Firebase Auth
+                await updateProfile(user, {
                     displayName: username
                 });
                 
+                // Create user profile in the database
+                await createUserProfile(user.uid, {
+                    displayName: username,
+                    email: email,
+                    photoURL: user.photoURL || null
+                });
+                
+                hideLoading();
                 window.location.href = 'profile.html';
             } catch (error) {
                 hideLoading();
-                showError(error.message);
+                let errorMessage = error.message || 'An error occurred during signup';
+                
+                // Make error messages more user-friendly
+                if (errorMessage.includes('auth/email-already-in-use')) {
+                    errorMessage = 'This email is already registered. Try logging in instead.';
+                } else if (errorMessage.includes('auth/invalid-email')) {
+                    errorMessage = 'Please enter a valid email address.';
+                } else if (errorMessage.includes('auth/weak-password')) {
+                    errorMessage = 'Please choose a stronger password (at least 6 characters).';
+                } else if (errorMessage.includes('auth/network-request-failed')) {
+                    errorMessage = 'Network error. Please check your internet connection.';
+                }
+                
+                showError(errorMessage);
+                console.error('Signup error:', error);
             }
         });
 
