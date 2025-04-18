@@ -31,6 +31,7 @@ Below is the user flow diagram illustrating the navigation and core interactions
 /data        # Data storage (JSON, user/quiz data)
 /js          # JavaScript functionality (auth, quiz, profile, leaderboard, config)
 /pages       # Additional HTML pages (quiz, profile, etc.)
+/index.html  # Landing page
 ```
 
 ---
@@ -63,29 +64,6 @@ For questions or contributions, please open an issue or submit a pull request!
     ViewAchievements --> Dashboard
     ViewLeaderboard --> Dashboard
     LogOut --> Start
-```
-
----
-
-## 📂 Project Structure
-
-```
-SkillUp/
-├── index.html              # Homepage
-├── css/
-│   └── style.css           # Main stylesheet
-├── js/
-│   ├── config.js           # Firebase configuration
-│   ├── auth.js             # Authentication logic
-│   ├── quiz.js             # Quiz functionality
-│   └── profile.js          # Profile and achievements
-├── pages/
-│   ├── login.html          # Login page
-│   ├── signup.html         # Signup page
-│   ├── quiz.html           # Quiz interface
-│   └── profile.html        # User profile and achievements
-├── assets/                 # Images and icons
-└── README.md               # Project documentation
 ```
 
 ---
