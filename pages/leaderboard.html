@@ -7,6 +7,147 @@
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
     <link rel="stylesheet" href="../css/leaderboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced Leaderboard Styles */
+        .search-box {
+            position: relative;
+            width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 20px;
+            border: 2px solid #3498db;
+            background-color: rgba(26, 28, 44, 0.7);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+            outline: none;
+            border-color: #2ecc71;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3498db;
+        }
+        
+        .leaderboard-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .leaderboard-stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(52, 152, 219, 0.15);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stats-info {
+            display: flex;
+            justify-content: space-around;
+            font-size: 18px;
+            font-weight: bold;
+            color: #f1c40f;
+            text-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+        }
+        
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 2s infinite;
+        }
+        
+        .current-user-row {
+            background-color: rgba(46, 204, 113, 0.15) !important;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .current-user-tag {
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .text-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-weight: bold;
+            font-size: 24px;
+            color: #fff;
+        }
+        
+        .last-active {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Animate rows on load */
+        .leaderboard-row {
+            animation: slideIn 0.4s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Stagger animation for rows */
+        .leaderboard-row:nth-child(1) { animation-delay: 0.1s; }
+        .leaderboard-row:nth-child(2) { animation-delay: 0.2s; }
+        .leaderboard-row:nth-child(3) { animation-delay: 0.3s; }
+        .leaderboard-row:nth-child(4) { animation-delay: 0.4s; }
+        .leaderboard-row:nth-child(5) { animation-delay: 0.5s; }
+        
+        /* Make rank medals more prominent */
+        .rank-medal i {
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+        
+        /* Highlight points for emphasis */
+        .rank-points span {
+            font-weight: 700;
+            color: #f1c40f;
+        }
+        
+        /* Badge styles */
+        .rank-badge i {
+            color: #e74c3c;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            font-size: 18px;
+            color: #e74c3c;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
     <div class="floating-particles"></div>
@@ -40,17 +181,24 @@
     
     <div class="leaderboard-container">
         <div class="leaderboard-header">
-            <h1 class="leaderboard-title">Hero Rankings</h1>
+            <h1 class="leaderboard-title">Hero Rankings <span class="sparkle">✨</span></h1>
             
-            <div class="filter-dropdown">
-                <div class="filter-btn">
-                    All Time <i class="fas fa-chevron-down"></i>
+            <div class="leaderboard-controls">
+                <div class="filter-dropdown">
+                    <div class="filter-btn">
+                        All Time <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="filter-menu">
+                        <div class="filter-option active" data-filter="all-time">All Time</div>
+                        <div class="filter-option" data-filter="monthly">This Month</div>
+                        <div class="filter-option" data-filter="weekly">This Week</div>
+                        <div class="filter-option" data-filter="daily">Today</div>
+                    </div>
                 </div>
-                <div class="filter-menu">
-                    <div class="filter-option active" data-filter="all-time">All Time</div>
-                    <div class="filter-option" data-filter="monthly">This Month</div>
-                    <div class="filter-option" data-filter="weekly">This Week</div>
-                    <div class="filter-option" data-filter="daily">Today</div>
+                
+                <div class="search-box">
+                    <input type="text" id="player-search" placeholder="Search heroes...">
+                    <i class="fas fa-search"></i>
                 </div>
             </div>
         </div>
@@ -166,9 +314,9 @@
     </div>
     
     <script type="module">
-        import { auth, firestore } from '../js/config.js';
+        import { auth, db } from '../js/config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-        import { collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
         
         const loadingSpinner = document.querySelector('.loading-spinner');
         const userPoints = document.getElementById('user-points');
@@ -230,29 +378,336 @@
             });
         });
         
+        // Global variable to store leaderboard entries
+        let allLeaderboardEntries = [];
+        
+        // Function to render the leaderboard with data
+        function renderLeaderboard(entries) {
+            // Store entries for search functionality
+            allLeaderboardEntries = entries;
+            if (!entries || entries.length === 0) {
+                return;
+            }
+            
+            // Find current user's position
+            let currentUserIndex = -1;
+            let currentUserData = null;
+            if (auth.currentUser) {
+                currentUserIndex = entries.findIndex(entry => entry.uid === auth.currentUser.uid);
+                if (currentUserIndex !== -1) {
+                    currentUserData = entries[currentUserIndex];
+                    userPoints.textContent = currentUserData.points;
+                    document.querySelector('.level-badge span').textContent = `LVL ${currentUserData.level}`;
+                }
+            }
+
+            // Handle top 3 cards with improved display
+            const leaderboardCards = document.querySelector('.leaderboard-cards');
+            leaderboardCards.innerHTML = ''; // Clear existing cards
+            
+            // Create medal classes and icons for top 3
+            const medalStyles = [
+                { class: 'rank-gold', icon: 'fa-crown', position: 1, aura: '#FFD700' },
+                { class: 'rank-silver', icon: 'fa-medal', position: 2, aura: '#C0C0C0' },
+                { class: 'rank-bronze', icon: 'fa-medal', position: 3, aura: '#CD7F32' }
+            ];
+            
+            // Display top 3 cards if we have enough users
+            const topThreeIndices = entries.length >= 3 ? [0, 1, 2] : [...Array(entries.length).keys()];
+            
+            // Create fancy cards for top positions
+            const cardOrder = entries.length >= 3 ? [1, 0, 2] : topThreeIndices;
+            cardOrder.forEach((index, displayIndex) => {
+                const user = entries[index];
+                const style = medalStyles[index];
+                const rankCard = document.createElement('div');
+                rankCard.className = `rank-card ${style.class}`;
+                
+                // If this is current user, add special highlighting
+                if (user.uid === auth.currentUser?.uid) {
+                    rankCard.classList.add('current-user');
+                }
+                
+                // Create avatar content
+                let avatarContent;
+                if (user.photoURL) {
+                    avatarContent = `<img src="${user.photoURL}" alt="${user.displayName}'s avatar">`;
+                } else {
+                    avatarContent = `<div class="text-avatar">${user.displayName.charAt(0).toUpperCase()}</div>`;
+                }
+                
+                // Add special effects and animations
+                rankCard.innerHTML = `
+                    <div class="rank-number">${style.position}</div>
+                    <div class="rank-medal" style="text-shadow: 0 0 10px ${style.aura}, 0 0 20px ${style.aura};">
+                        <i class="fas ${style.icon} fa-bounce"></i>
+                    </div>
+                    <div class="rank-avatar" style="box-shadow: 0 0 15px ${style.aura};">${avatarContent}</div>
+                    <h3 class="rank-name">${user.displayName}</h3>
+                    <div class="rank-stats">
+                        <div class="rank-points">
+                            <i class="fas fa-star fa-spin-pulse"></i>
+                            <span>${user.points.toLocaleString()}</span>
+                        </div>
+                        <div class="rank-level">
+                            <i class="fas fa-level-up-alt"></i>
+                            <span>${user.level}</span>
+                        </div>
+                        <div class="rank-badge">
+                            <i class="fas fa-award"></i>
+                            <span>${getBadgeCount(user)}</span>
+                        </div>
+                    </div>
+                    ${user.lastQuizDate ? `<div class="last-active">Last active: ${formatDate(user.lastUpdated)}</div>` : ''}
+                `;
+                
+                leaderboardCards.appendChild(rankCard);
+            });
+            
+            // Handle leaderboard table
+            const leaderboardList = document.getElementById('leaderboard-list');
+            leaderboardList.innerHTML = '';
+            
+            // Add all entries to the table
+            entries.forEach((user, index) => {
+                // Create avatar content
+                let avatarContent;
+                if (user.photoURL) {
+                    avatarContent = `<img src="${user.photoURL}" alt="${user.displayName}'s avatar">`;
+                } else {
+                    avatarContent = `<div class="text-avatar">${user.displayName.charAt(0).toUpperCase()}</div>`;
+                }
+                
+                const row = document.createElement('div');
+                row.className = 'leaderboard-row';
+                
+                // Add ranking style and animation
+                if (index < 3) {
+                    row.classList.add(`rank-${index + 1}`);
+                }
+                
+                // Highlight current user
+                if (user.uid === auth.currentUser?.uid) {
+                    row.classList.add('current-user-row');
+                }
+                
+                row.innerHTML = `
+                    <div class="col-rank">${index + 1}</div>
+                    <div class="col-player">
+                        <div class="player-avatar">${avatarContent}</div>
+                        <span>${user.displayName}</span>
+                        ${user.uid === auth.currentUser?.uid ? '<span class="current-user-tag">You</span>' : ''}
+                    </div>
+                    <div class="col-level">${user.level}</div>
+                    <div class="col-points">${user.points.toLocaleString()}</div>
+                    <div class="col-badges">${getBadgeCount(user)}</div>
+                `;
+                
+                leaderboardList.appendChild(row);
+            });
+            
+            // Display total users stats
+            const statsElement = document.createElement('div');
+            statsElement.className = 'leaderboard-stats';
+            statsElement.innerHTML = `
+                <div class="stats-info">
+                    <span>Total Heroes: ${entries.length}</span>
+                    ${currentUserData ? `<span>Your Rank: ${currentUserIndex + 1} of ${entries.length}</span>` : ''}
+                </div>
+            `;
+            
+            // Add the stats at the end of the table
+            document.querySelector('.full-leaderboard').appendChild(statsElement);
+        }
+        
+        // Format date for display
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        }
+        
+        // Helper function to get badge count
+        function getBadgeCount(user) {
+            // Improved badge calculation based on level and points
+            const baseCount = Math.floor(user.level / 2);
+            const bonusCount = Math.floor(user.points / 1000);
+            return baseCount + bonusCount;
+        }
+        
+        // Calculate level based on points
+        function calculateLevel(points) {
+            // Simple level formula: each level requires more points than the previous
+            return Math.max(1, Math.floor(Math.sqrt(points / 100)) + 1);
+        }
+
         async function loadLeaderboard(filter = 'all-time') {
             showLoading();
             
             try {
-                const leaderboardQuery = query(
-                    collection(firestore, 'users'),
-                    orderBy('points', 'desc'),
-                    limit(50)
-                );
+                // Use Firebase Realtime Database instead of Firestore
+                const leaderboardRef = ref(db, 'leaderboard');
+                const leaderboardSnapshot = await get(leaderboardRef);
                 
-                const snapshot = await getDocs(leaderboardQuery);
-                
-                if (snapshot.empty) {
-                    showToast('No leaderboard data available yet', 'info');
+                // If we don't have any leaderboard data, try to load from users collection as fallback
+                if (!leaderboardSnapshot.exists() || Object.keys(leaderboardSnapshot.val() || {}).length === 0) {
+                    const usersRef = ref(db, 'users');
+                    const usersSnapshot = await get(usersRef);
+                    
+                    if (!usersSnapshot.exists() || Object.keys(usersSnapshot.val() || {}).length === 0) {
+                        showToast('No leaderboard data available yet', 'info');
+                        hideLoading();
+                        return;
+                    }
+                    
+                    // Build leaderboard from users data
+                    const userData = usersSnapshot.val();
+                    const leaderboardEntries = Object.entries(userData)
+                        .map(([userId, user]) => ({
+                            uid: userId,
+                            displayName: user.displayName || 'Anonymous',
+                            photoURL: user.photoURL || null,
+                            points: user.totalPoints || 0,
+                            level: calculateLevel(user.totalPoints || 0),
+                            quizzesTaken: user.quizzesTaken || 0,
+                            lastUpdated: user.lastActive || user.createdAt || ''
+                        }))
+                        .sort((a, b) => b.points - a.points);
+                        
+                    // Render the leaderboard with available user data
+                    renderLeaderboard(leaderboardEntries);
                     hideLoading();
                     return;
                 }
                 
+                // Process the regular leaderboard data
+                const leaderboardData = leaderboardSnapshot.val() || {};
+                const leaderboardEntries = Object.entries(leaderboardData)
+                    .map(([userId, userData]) => ({
+                        uid: userId,
+                        displayName: userData.displayName || 'Anonymous',
+                        photoURL: userData.photoURL || null,
+                        points: userData.points || 0,
+                        level: userData.level || calculateLevel(userData.points || 0),
+                        quizzesTaken: userData.quizzesTaken || 0,
+                        lastUpdated: userData.lastUpdated || ''
+                    }))
+                    .sort((a, b) => b.points - a.points);
+                
+                // Render the leaderboard
+                renderLeaderboard(leaderboardEntries);
                 hideLoading();
             } catch (error) {
                 console.error('Error loading leaderboard:', error);
                 showToast('Error loading leaderboard data', 'error');
                 hideLoading();
+            }
+        }
+        
+        // Handle search functionality
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase().trim();
+            const leaderboardList = document.getElementById('leaderboard-list');
+            
+            // If search is empty, display all entries
+            if (!searchTerm) {
+                renderLeaderboard(allLeaderboardEntries);
+                return;
+            }
+            
+            // Filter entries based on search term
+            const filteredEntries = allLeaderboardEntries.filter(entry => 
+                entry.displayName.toLowerCase().includes(searchTerm)
+            );
+            
+            // Clear existing entries
+            leaderboardList.innerHTML = '';
+            
+            if (filteredEntries.length === 0) {
+                // No matching entries
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.innerHTML = `<i class="fas fa-search"></i> No heroes matching "${searchTerm}" found`;
+                leaderboardList.appendChild(noResults);
+            } else {
+                // Display filtered entries
+                filteredEntries.forEach((user, index) => {
+                    // Create avatar content
+                    let avatarContent;
+                    if (user.photoURL) {
+                        avatarContent = `<img src="${user.photoURL}" alt="${user.displayName}'s avatar">`;
+                    } else {
+                        avatarContent = `<div class="text-avatar">${user.displayName.charAt(0).toUpperCase()}</div>`;
+                    }
+                    
+                    // Original position in unfiltered list
+                    const originalRank = allLeaderboardEntries.findIndex(entry => entry.uid === user.uid) + 1;
+                    
+                    const row = document.createElement('div');
+                    row.className = 'leaderboard-row';
+                    
+                    // Add ranking style
+                    if (originalRank <= 3) {
+                        row.classList.add(`rank-${originalRank}`);
+                    }
+                    
+                    // Highlight current user
+                    if (user.uid === auth.currentUser?.uid) {
+                        row.classList.add('current-user-row');
+                    }
+                    
+                    row.innerHTML = `
+                        <div class="col-rank">${originalRank}</div>
+                        <div class="col-player">
+                            <div class="player-avatar">${avatarContent}</div>
+                            <span>${highlightSearchTerm(user.displayName, searchTerm)}</span>
+                            ${user.uid === auth.currentUser?.uid ? '<span class="current-user-tag">You</span>' : ''}
+                        </div>
+                        <div class="col-level">${user.level}</div>
+                        <div class="col-points">${user.points.toLocaleString()}</div>
+                        <div class="col-badges">${getBadgeCount(user)}</div>
+                    `;
+                    
+                    leaderboardList.appendChild(row);
+                });
+            }
+            
+            // Update stats with filtered information
+            updateStats(filteredEntries);
+        }
+        
+        // Helper function to highlight the search term in the username
+        function highlightSearchTerm(text, term) {
+            if (!term) return text;
+            
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<span style="background-color: rgba(241, 196, 15, 0.3); color: #fff; padding: 0 2px;">$1</span>');
+        }
+        
+        // Update stats based on the filtered entries
+        function updateStats(entries) {
+            const statsElement = document.querySelector('.leaderboard-stats') || document.createElement('div');
+            statsElement.className = 'leaderboard-stats';
+            
+            let currentUserIndex = -1;
+            if (auth.currentUser) {
+                currentUserIndex = allLeaderboardEntries.findIndex(entry => entry.uid === auth.currentUser.uid);
+            }
+            
+            statsElement.innerHTML = `
+                <div class="stats-info">
+                    <span>${entries.length === allLeaderboardEntries.length ? `Total Heroes: ${entries.length}` : `Showing ${entries.length} of ${allLeaderboardEntries.length} Heroes`}</span>
+                    ${currentUserIndex !== -1 ? `<span>Your Rank: ${currentUserIndex + 1} of ${allLeaderboardEntries.length}</span>` : ''}
+                </div>
+            `;
+            
+            // Add or update the stats at the end of the table
+            const fullLeaderboard = document.querySelector('.full-leaderboard');
+            const existingStats = document.querySelector('.leaderboard-stats');
+            if (existingStats) {
+                fullLeaderboard.replaceChild(statsElement, existingStats);
+            } else {
+                fullLeaderboard.appendChild(statsElement);
             }
         }
         
@@ -272,6 +727,13 @@
         });
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Setup player search functionality
+            const searchInput = document.getElementById('player-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', handleSearch);
+            }
+            
+            // Create particle effects
             const particles = document.querySelector('.floating-particles');
             const particleCount = 30;
             
