@@ -1,4 +1,5 @@
-import { auth, db, usersRef, quizzesRef, leaderboardRef, badgesRef } from './config.js';
+import { db, usersRef, quizzesRef, leaderboardRef, badgesRef } from './config.js';
+const auth = window.auth;
 import { onValue, ref, set, update, push, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
@@ -37,20 +38,25 @@ let comboMultiplier = 1;
 let difficultyLevel = 1;
 let achievementProgress = {};
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser = user;
-        const userRef = ref(db, `users/${user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val();
-            if (userData) {
-                updateUserUI(userData);
-            }
-        });
-        loadQuizCategories();
-    } else {
-        window.location.href = '../pages/login.html';
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            const userRef = ref(db, `users/${user.uid}`);
+            onValue(userRef, (snapshot) => {
+                const userData = snapshot.val();
+                if (userData) {
+                    console.log('[updateUserUI] Called with userData:', userData);
+                    updateUserUI(userData);
+                } else {
+                    console.log('[updateUserUI] No userData found for user:', user.uid);
+                }
+            });
+            loadQuizCategories();
+        } else {
+            window.location.href = '../pages/login.html';
+        }
+    });
 });
 
 function loadQuizCategories() {
@@ -539,9 +545,29 @@ async function saveQuizResults(scorePercentage) {
     }
     
     // Save all updates
-    await update(userRef, updates);
-    
-    // Update leaderboard
+    console.log('[User Update] About to update user:', currentUser.uid, { level: updates.level, totalPoints: updates.totalPoints });
+    await update(userRef, {
+        ...updates,
+        totalPoints: updates.totalPoints, // Always update totalPoints
+        allTimePoints: updates.totalPoints, // Also update allTimePoints for compatibility
+        level: updates.level // Always update level
+    });
+    console.log('[User Update] User updated:', currentUser.uid, { level: updates.level, totalPoints: updates.totalPoints });
+
+    // Ensure leaderboard is also updated and in sync with users collection
+    const leaderboardRef = ref(db, `leaderboard/${currentUser.uid}`);
+    await set(leaderboardRef, {
+        uid: currentUser.uid,
+        displayName: currentUser.displayName || updates.displayName || 'Anonymous',
+        photoURL: currentUser.photoURL || updates.photoURL || null,
+        points: updates.totalPoints,
+        level: updates.level,
+        lastUpdated: new Date().toISOString(),
+        recentPoints: pointsEarned
+        // Add any other leaderboard-specific fields if needed
+    });
+
+    // Update leaderboard (legacy call, if used elsewhere)
     updateLeaderboard(pointsEarned, updates.totalPoints, currentUser.displayName, currentUser.photoURL);
 }
 
@@ -645,8 +671,8 @@ function updateUserUI(userData) {
     // Update points
     const pointsElement = document.querySelector('.points span');
     if (pointsElement) {
-        // Use totalPoints which is the field used in saveQuizResults
-        pointsElement.textContent = userData.totalPoints || 0;
+        // Use totalPoints or points, fallback to 0
+        pointsElement.textContent = userData.totalPoints || userData.points || 0;
     }
     
     // Update avatar
