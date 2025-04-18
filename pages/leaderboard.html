@@ -181,7 +181,7 @@
     
     <div class="leaderboard-container">
         <div class="leaderboard-header">
-            <h1 class="leaderboard-title">Hero Rankings <span class="sparkle">✨</span></h1>
+            <h1 class="leaderboard-title">Epic Hero Rankings <span class="sparkle">✨</span></h1>
             
             <div class="leaderboard-controls">
                 <div class="filter-dropdown">
@@ -269,39 +269,20 @@
         </div>
         
         <div class="full-leaderboard">
-            <h2 class="section-title">All Heroes</h2>
+            <h2 class="section-title">Global Battle Arena - All Heroes</h2>
             
-            <div class="leaderboard-table">
-                <div class="leaderboard-head">
-                    <div class="col-rank">Rank</div>
-                    <div class="col-player">Player</div>
-                    <div class="col-level">Level</div>
-                    <div class="col-points">Points</div>
-                    <div class="col-badges">Badges</div>
+            <div class="leaderboard-table game-stats-table">
+                <div class="leaderboard-head improved-head">
+                    <div class="head-col head-rank"><i class="fas fa-trophy"></i><span>Rank</span></div>
+                    <div class="head-col head-player"><i class="fas fa-user-ninja"></i><span>Hero Name</span></div>
+                    <div class="head-col head-level"><i class="fas fa-crown"></i><span>Class Level</span></div>
+                    <div class="head-col head-points"><i class="fas fa-star"></i><span>Battle Points</span></div>
+                    <div class="head-col head-badges"><i class="fas fa-medal"></i><span>Achievements</span></div>
+                    <div class="head-col head-date"><i class="fas fa-clock"></i><span>Last Quest</span></div>
                 </div>
                 
-                <div class="leaderboard-body" id="leaderboard-list">
-                    <div class="leaderboard-row">
-                        <div class="col-rank">4</div>
-                        <div class="col-player">
-                            <div class="player-avatar"><i class="fas fa-user"></i></div>
-                            <span>SwordMaster</span>
-                        </div>
-                        <div class="col-level">8</div>
-                        <div class="col-points">5200</div>
-                        <div class="col-badges">4</div>
-                    </div>
-                    
-                    <div class="leaderboard-row">
-                        <div class="col-rank">5</div>
-                        <div class="col-player">
-                            <div class="player-avatar"><i class="fas fa-user"></i></div>
-                            <span>MagicWielder</span>
-                        </div>
-                        <div class="col-level">7</div>
-                        <div class="col-points">4800</div>
-                        <div class="col-badges">3</div>
-                    </div>
+                <div class="leaderboard-list" id="leaderboard-list">
+                    <!-- Leaderboard entries will be populated here -->
                 </div>
             </div>
         </div>
@@ -313,10 +294,13 @@
         <div class="spinner"></div>
     </div>
     
+    
+    
     <script type="module">
         import { auth, db } from '../js/config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
         import { ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
         
         const loadingSpinner = document.querySelector('.loading-spinner');
         const userPoints = document.getElementById('user-points');
@@ -383,10 +367,13 @@
         
         // Function to render the leaderboard with data
         function renderLeaderboard(entries) {
-            // Store entries for search functionality
-            allLeaderboardEntries = entries;
-            if (!entries || entries.length === 0) {
-                return;
+    // Store entries for search functionality
+    allLeaderboardEntries = entries;
+    if (!entries || entries.length === 0) {
+        const leaderboardCards = document.querySelector('.leaderboard-cards');
+        leaderboardCards.innerHTML = '';
+        const leaderboardList = document.getElementById('leaderboard-list');
+        leaderboardList.innerHTML = '<div class="no-results"><i class="fas fa-scroll"></i> The battle arena awaits brave heroes!</div>';
             }
             
             // Find current user's position
@@ -400,7 +387,7 @@
                     document.querySelector('.level-badge span').textContent = `LVL ${currentUserData.level}`;
                 }
             }
-
+            
             // Handle top 3 cards with improved display
             const leaderboardCards = document.querySelector('.leaderboard-cards');
             leaderboardCards.innerHTML = ''; // Clear existing cards
@@ -454,21 +441,19 @@
                             <span>${user.level}</span>
                         </div>
                         <div class="rank-badge">
-                            <i class="fas fa-award"></i>
+                            <i class="fas fa-medal"></i>
                             <span>${getBadgeCount(user)}</span>
                         </div>
                     </div>
-                    ${user.lastQuizDate ? `<div class="last-active">Last active: ${formatDate(user.lastUpdated)}</div>` : ''}
                 `;
                 
                 leaderboardCards.appendChild(rankCard);
             });
             
-            // Handle leaderboard table
+            // Render the rest of the leaderboard
             const leaderboardList = document.getElementById('leaderboard-list');
             leaderboardList.innerHTML = '';
             
-            // Add all entries to the table
             entries.forEach((user, index) => {
                 // Create avatar content
                 let avatarContent;
@@ -481,8 +466,8 @@
                 const row = document.createElement('div');
                 row.className = 'leaderboard-row';
                 
-                // Add ranking style and animation
-                if (index < 3) {
+                // Add ranking style
+                if (index <= 2) {
                     row.classList.add(`rank-${index + 1}`);
                 }
                 
@@ -492,32 +477,23 @@
                 }
                 
                 row.innerHTML = `
-                    <div class="col-rank">${index + 1}</div>
-                    <div class="col-player">
-                        <div class="player-avatar">${avatarContent}</div>
-                        <span>${user.displayName}</span>
-                        ${user.uid === auth.currentUser?.uid ? '<span class="current-user-tag">You</span>' : ''}
-                    </div>
-                    <div class="col-level">${user.level}</div>
-                    <div class="col-points">${user.points.toLocaleString()}</div>
-                    <div class="col-badges">${getBadgeCount(user)}</div>
-                `;
+  <div class="col-rank">${index + 1}</div>
+  <div class="col-player">
+    <div class="player-avatar">${avatarContent}</div>
+    <span>${user.displayName}</span>
+    ${user.uid === auth.currentUser?.uid ? '<span class="current-user-tag">You</span>' : ''}
+  </div>
+  <div class="col-level">${user.level}</div>
+  <div class="col-points">${user.points.toLocaleString()}</div>
+  <div class="col-badges">${getBadgeCount(user)}</div>
+  <div class="col-date">${formatDate(user.lastUpdated || user.lastActive || user.createdAt)}</div>
+`;
                 
                 leaderboardList.appendChild(row);
             });
             
-            // Display total users stats
-            const statsElement = document.createElement('div');
-            statsElement.className = 'leaderboard-stats';
-            statsElement.innerHTML = `
-                <div class="stats-info">
-                    <span>Total Heroes: ${entries.length}</span>
-                    ${currentUserData ? `<span>Your Rank: ${currentUserIndex + 1} of ${entries.length}</span>` : ''}
-                </div>
-            `;
-            
-            // Add the stats at the end of the table
-            document.querySelector('.full-leaderboard').appendChild(statsElement);
+            // Update stats display
+            updateStats(entries);
         }
         
         // Format date for display
@@ -530,8 +506,10 @@
         // Helper function to get badge count
         function getBadgeCount(user) {
             // Improved badge calculation based on level and points
-            const baseCount = Math.floor(user.level / 2);
-            const bonusCount = Math.floor(user.points / 1000);
+            const level = user.level || calculateLevel(user.totalPoints || user.points || 0);
+            const points = user.totalPoints || user.points || 0;
+            const baseCount = Math.floor(level / 2);
+            const bonusCount = Math.floor(points / 1000);
             return baseCount + bonusCount;
         }
         
