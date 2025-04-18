@@ -323,12 +323,24 @@ function updateProfileUI(userData) {
         }
 
         // Update level badge - use level field from user data if available
-        const level = userData.level || (userData.totalPoints ? Math.max(1, Math.floor(Math.sqrt(userData.totalPoints / 100)) + 1) : 1);
+        const totalPoints = userData.totalPoints || userData.points || 0;
+        const level = userData.level || calculateLevel(totalPoints);
         elements.levelBadge.textContent = level;
         elements.navLevelBadge.textContent = `LVL ${level}`;
+        // Update navbar level-badge class
+        const navLevelBadgeDiv = elements.navLevelBadge?.parentElement;
+        if (navLevelBadgeDiv) {
+            // Remove any previous level-badge-XX classes
+            navLevelBadgeDiv.className = 'level-badge';
+            navLevelBadgeDiv.classList.add(`level-${level}`);
+        }
+        // Update navbar points if present
+        const navPoints = document.querySelector('.points span');
+        if (navPoints) {
+            navPoints.textContent = totalPoints;
+        }
 
         // Update stats with fields that match auth.js
-        const totalPoints = userData.totalPoints || 0;
         const quizzesTaken = userData.quizzesTaken || 0;
         const accuracy = userData.accuracy || 0;
         const bestStreak = userData.bestStreak || 0;
