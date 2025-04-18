@@ -1,4 +1,5 @@
-import { auth, db, usersRef } from './config.js';
+import { db, usersRef } from './config.js';
+const auth = window.auth;
 import { set, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { 
     createUserWithEmailAndPassword, 
