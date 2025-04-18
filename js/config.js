@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { getDatabase, ref } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
 
 const firebaseConfig = {
@@ -22,7 +22,17 @@ const analytics = getAnalytics(app);
 const usersRef = ref(db, 'users');
 const quizzesRef = ref(db, 'quizzes');
 const leaderboardRef = ref(db, 'leaderboard');
+
+// Make Firebase objects globally accessible
+window.db = db;
+window.ref = ref;
+window.get = get;
+window.update = update;
 const badgesRef = ref(db, 'badges');
+
+if (typeof window.auth === 'undefined') {
+    window.auth = auth;
+}
 
 export { 
     auth, 
