@@ -122,9 +122,9 @@
     </div>
 
     <script type="module">
-        import { auth, firestore } from '../js/config.js';
+        import { auth, db } from '../js/config.js';
         import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-        import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { ref, get, set, update } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
         const loginForm = document.getElementById('loginForm');
         const googleSignInBtn = document.getElementById('googleSignIn');
@@ -162,18 +162,51 @@
         };
 
         const createUserProfile = async (userId, userData) => {
-            const userRef = doc(firestore, 'users', userId);
-            const userSnap = await getDoc(userRef);
-            
-            if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                    ...userData,
-                    createdAt: new Date().toISOString(),
-                    points: 0,
-                    level: 1,
-                    quizzesTaken: 0,
-                    badges: ['newcomer']
-                });
+            try {
+                const userRef = ref(db, `users/${userId}`);
+                const snapshot = await get(userRef);
+                
+                if (!snapshot.exists()) {
+                    await set(userRef, {
+                        // Basic Info
+                        email: userData.email,
+                        displayName: userData.displayName || 'Anonymous',
+                        photoURL: userData.photoURL || null,
+                        createdAt: new Date().toISOString(),
+                        lastActive: new Date().toISOString(),
+                        
+                        // Progress Stats
+                        level: 1,
+                        totalPoints: 0,
+                        quizzesTaken: 0,
+                        totalCorrectAnswers: 0,
+                        accuracy: 0,
+                        bestStreak: 0,
+                        currentStreak: 0,
+                        
+                        // Collections
+                        badges: {
+                            newcomer: { earned: true, date: new Date().toISOString() }
+                        },
+                        achievements: {},
+                        quizHistory: {},
+                        categoryProgress: {},
+                        
+                        // Leaderboard Stats
+                        weeklyPoints: 0,
+                        monthlyPoints: 0,
+                        allTimePoints: 0,
+                        rank: 'Novice'
+                    });
+                } else {
+                    // Update last login time
+                    await update(userRef, {
+                        lastActive: new Date().toISOString()
+                    });
+                }
+            } catch (error) {
+                console.error('Error creating/updating user profile:', error);
+                throw error;
             }
         };
 
@@ -186,58 +219,105 @@
                 const password = document.getElementById('password').value;
                 
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                await createUserProfile(userCredential.user.uid, {
-                    email: userCredential.user.email,
-                    displayName: userCredential.user.displayName
+                const user = userCredential.user;
+                
+                // Create or update the user profile with the login timestamp
+                await createUserProfile(user.uid, {
+                    email: user.email,
+                    displayName: user.displayName || 'Anonymous',
+                    photoURL: user.photoURL || null
                 });
                 
+                // Also update the leaderboard entry if it doesn't exist
+                const leaderboardRef = ref(db, `leaderboard/${user.uid}`);
+                const leaderboardSnapshot = await get(leaderboardRef);
+                
+                if (!leaderboardSnapshot.exists()) {
+                    await set(leaderboardRef, {
+                        displayName: user.displayName || 'Anonymous',
+                        photoURL: user.photoURL || null,
+                        points: 0,
+                        level: 1,
+                        lastUpdated: new Date().toISOString()
+                    });
+                }
+
                 window.location.href = 'profile.html';
             } catch (error) {
                 hideLoading();
-                showError(error.message);
+                let errorMessage = error.message;
+                
+                // Make error messages more user-friendly
+                if (errorMessage.includes('auth/user-not-found')) {
+                    errorMessage = 'No account found with this email address';
+                } else if (errorMessage.includes('auth/wrong-password')) {
+                    errorMessage = 'Incorrect password. Please try again';
+                } else if (errorMessage.includes('auth/invalid-email')) {
+                    errorMessage = 'Please enter a valid email address';
+                } else if (errorMessage.includes('auth/too-many-requests')) {
+                    errorMessage = 'Too many failed login attempts. Please try again later';
+                }
+                
+                showError(errorMessage);
+                console.error('Login error:', error);
             }
         });
 
         googleSignInBtn.addEventListener('click', async () => {
             showLoading();
-            
+
             try {
-                showError("Domain not authorized by Firebase. Use email login or add localhost to your Firebase auth domains");
-                hideLoading();
-                
+                // Configure Google provider
                 googleProvider.addScope('profile');
                 googleProvider.addScope('email');
                 googleProvider.setCustomParameters({
                     prompt: 'select_account'
                 });
                 
+                // Attempt Google sign-in
                 const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
                 
-                if (result.user) {
-                    await createUserProfile(result.user.uid, {
-                        email: result.user.email,
-                        displayName: result.user.displayName || 'Hero',
-                        photoURL: result.user.photoURL,
-                        lastLogin: new Date().toISOString()
+                if (user) {
+                    // Create or update user profile in Realtime Database
+                    await createUserProfile(user.uid, {
+                        email: user.email,
+                        displayName: user.displayName || 'Anonymous',
+                        photoURL: user.photoURL || null
                     });
                     
+                    // Also update the leaderboard entry
+                    const leaderboardRef = ref(db, `leaderboard/${user.uid}`);
+                    const leaderboardSnapshot = await get(leaderboardRef);
+                    
+                    if (!leaderboardSnapshot.exists()) {
+                        await set(leaderboardRef, {
+                            displayName: user.displayName || 'Anonymous',
+                            photoURL: user.photoURL || null,
+                            points: 0,
+                            level: 1,
+                            lastUpdated: new Date().toISOString()
+                        });
+                    }
+                    
                     window.location.href = 'profile.html';
-                } else {
-                    throw new Error('Google sign-in failed. Try again?');
                 }
             } catch (error) {
                 hideLoading();
-                console.error('Google Sign In Error:', error);
+                let errorMessage = error.message;
                 
-                if (error.code === 'auth/popup-closed-by-user') {
-                    showError('Sign-in cancelled. Give it another shot?');
-                } else if (error.code === 'auth/popup-blocked') {
-                    showError('Pop-up blocked. Allow popups for this site!');
-                } else if (error.code === 'auth/unauthorized-domain') {
-                    showError('Domain not set up. Use email login for now.');
+                if (errorMessage.includes('auth/popup-closed-by-user')) {
+                    errorMessage = 'Sign in was cancelled';
+                } else if (errorMessage.includes('auth/popup-blocked')) {
+                    errorMessage = 'Pop-up was blocked by the browser. Please allow pop-ups for this site.';
+                } else if (errorMessage.includes('auth/unauthorized-domain')) {
+                    errorMessage = 'Using localhost? Add it to your Firebase Auth domains in the Firebase console.';
                 } else {
-                    showError(error.message || 'Google login failed. Try again?');
+                    errorMessage = 'Google login failed. Please try again.';
                 }
+                
+                showError(errorMessage);
+                console.error('Google sign-in error:', error);
             }
         });
 
