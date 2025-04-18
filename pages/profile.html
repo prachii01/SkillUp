@@ -132,5 +132,32 @@
     </div>
     
     <script type="module" src="../js/profile.js"></script>
+<script type="module">
+import { auth, db } from '../js/config.js';
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userRef = ref(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+                const levelBadge = document.querySelector('.level-badge span');
+                if (levelBadge) levelBadge.textContent = `LVL ${userData.level || 1}`;
+                const points = document.querySelector('.points span');
+                if (points) points.textContent = userData.totalPoints || userData.points || 0;
+                const avatar = document.querySelector('.avatar');
+                if (avatar) {
+                    if (userData.photoURL) {
+                        avatar.innerHTML = `<img src="${userData.photoURL}" alt="User avatar">`;
+                    } else if (userData.displayName) {
+                        avatar.textContent = userData.displayName.charAt(0);
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
