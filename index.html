@@ -11,6 +11,11 @@
 <body class="game-body">
     <div class="floating-particles"></div>
     <nav class="game-hud">
+        <div class="hamburger-menu">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
         <div class="hud-left">
             <div class="player-stats">
                 <div class="player-level">
@@ -47,12 +52,18 @@
                 <div class="quest-counter">5</div>
             </a>
             <div class="auth-buttons">
-                <a href="pages/login.html" class="btn btn-outline btn-glow">
+                <a href="pages/login.html" class="btn btn-outline btn-glow auth-btn-login">
                     <i class="fas fa-sign-in-alt"></i> Join Battle
                 </a>
-                <a href="pages/signup.html" class="btn btn-primary btn-glow">
+                <a href="pages/signup.html" class="btn btn-primary btn-glow auth-btn-signup">
                     <i class="fas fa-plus-circle"></i> Create Hero
                 </a>
+                <a href="pages/profile.html" class="btn btn-primary btn-glow user-profile-btn" style="display: none;">
+                    <i class="fas fa-user-circle"></i> <span class="username-display">Hero</span>
+                </a>
+                <button class="btn btn-outline btn-glow logout-btn" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     </nav>
@@ -75,7 +86,7 @@
                     </div>
                 </div>
                 <div class="cta-buttons">
-                    <a href="pages/login.html" class="btn btn-primary btn-large btn-glow">
+                    <a href="pages/signup.html" class="btn btn-primary btn-large btn-glow">
                         <i class="fas fa-play"></i> Start Your Journey
                     </a>
                     <a href="#quest-paths" class="btn btn-outline btn-large">
@@ -84,7 +95,8 @@
                 </div>
             </div>
         </div>
-        <section id="quest-paths" class="quest-paths">
+        <section id="quest-paths" class="quest-paths" style="background: #23263a; color: #fff; margin: 48px 0; padding: 32px 0; border-radius: 16px; min-height: 350px; box-shadow: 0 2px 16px rgba(0,0,0,0.18);">
+    <h2 class="section-title" style="color: #ffd700; text-align: center; margin-bottom: 32px; font-size: 2.2em; letter-spacing: 1px;">Choose Your Path</h2>
             <h2 class="section-title">Choose Your Path</h2>
             <div class="path-cards">
                 <div class="path-card">
@@ -122,6 +134,30 @@
                     </div>
                     <p>Explore the mysteries of science through experiments</p>
                     <a href="pages/quiz.html?path=science" class="btn btn-outline btn-glow">Begin Path</a>
+                </div>
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>History Hero</h3>
+                    <div class="path-stats">
+                        <span><i class="fas fa-scroll"></i> 12 Quests</span>
+                        <span><i class="fas fa-star"></i> 3500 XP</span>
+                    </div>
+                    <p>Travel through time and master world history</p>
+                    <a href="pages/quiz.html?path=history" class="btn btn-outline btn-glow">Begin Path</a>
+                </div>
+                <div class="path-card">
+                    <div class="path-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Language Legend</h3>
+                    <div class="path-stats">
+                        <span><i class="fas fa-scroll"></i> 10 Quests</span>
+                        <span><i class="fas fa-star"></i> 3000 XP</span>
+                    </div>
+                    <p>Become fluent in new languages and unlock global quests</p>
+                    <a href="pages/quiz.html?path=language" class="btn btn-outline btn-glow">Begin Path</a>
                 </div>
             </div>
         </section>
@@ -261,19 +297,267 @@
             </div>
         </section>
     </main>
-    <script>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay"></div>
+    <div class="mobile-nav">
+        
+                <a href="pages/login.html" class="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="pages/signup.html" class="mobile-signup-btn"><i class="fas fa-user-plus"></i> Sign Up</a>
+                <a href="#" class="mobile-logout-btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <div class="mobile-user-stats" style="display: none;">
+                <div class="mobile-user-level">Level: <span>1</span></div>
+                <div class="mobile-user-xp">XP: <span>0</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { auth, db } from './js/config.js';
+        import { ref, onValue, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userRef = ref(db, `users/${user.uid}`);
+                onValue(userRef, (snapshot) => {
+                    const userData = snapshot.val();
+                    if (userData) {
+                        const playerLevel = document.querySelector('.player-level span');
+                        if (playerLevel) playerLevel.textContent = `LVL ${userData.level || 1}`;
+                        const playerXP = document.querySelector('.player-xp span');
+                        if (playerXP) playerXP.textContent = `${userData.totalPoints || userData.points || 0} XP`;
+                        const playerStreak = document.querySelector('.player-streak span');
+                        if (playerStreak) playerStreak.textContent = `${userData.currentStreak || 0} Day Streak`;
+                        const usernameDisplay = document.querySelector('.username-display');
+                        if (usernameDisplay) usernameDisplay.textContent = userData.displayName || 'Hero';
+                        const levelProgressBar = document.querySelector('.progress-bar');
+                        if (levelProgressBar && userData.level) {
+                            const progress = userData.level > 1 ?
+                                (userData.totalPoints % (userData.level * 1000)) / (userData.level * 1000) * 100 :
+                                userData.totalPoints / 1000 * 100;
+                            levelProgressBar.style.width = `${progress}%`;
+                        }
+                    }
+                });
+            }
+        });
+        // Create floating particles
         const particles = document.querySelector('.floating-particles');
         for (let i = 0; i < 50; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            particle.style.animationDelay = (Math.random() * 2) + 's';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 10}s`;
             particles.appendChild(particle);
         }
+        
+        // Authentication state observer
+        onAuthStateChanged(auth, async (user) => {
+            const loginBtn = document.querySelector('.auth-btn-login');
+            const signupBtn = document.querySelector('.auth-btn-signup');
+            const profileBtn = document.querySelector('.user-profile-btn');
+            const logoutBtn = document.querySelector('.logout-btn');
+            const usernameDisplay = document.querySelector('.username-display');
+            const playerLevel = document.querySelector('.player-level span');
+            const playerXP = document.querySelector('.player-xp span');
+            const playerStreak = document.querySelector('.player-streak span');
+            const levelProgressBar = document.querySelector('.progress-bar');
+            
+            if (user) {
+                // User is signed in, show user profile
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                profileBtn.style.display = 'inline-flex';
+                logoutBtn.style.display = 'inline-flex';
+                
+                // Update user display name
+                usernameDisplay.textContent = user.displayName || 'Hero';
+                
+                // Get user profile data from database
+                try {
+                    const userRef = ref(db, `users/${user.uid}`);
+                    const snapshot = await get(userRef);
+                    
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        
+                        // Update player stats
+                        playerLevel.textContent = `LVL ${userData.level || 1}`;
+                        playerXP.textContent = `${userData.totalPoints || 0} XP`;
+                        playerStreak.textContent = `${userData.currentStreak || 0} Day Streak`;
+                        
+                        // Update level progress bar
+                        const levelProgress = userData.level > 1 ? 
+                            (userData.totalPoints % (userData.level * 1000)) / (userData.level * 1000) * 100 : 
+                            userData.totalPoints / 1000 * 100;
+                        levelProgressBar.style.width = `${levelProgress}%`;
+                        
+                        // Update CTA buttons for logged-in users
+                const ctaButtons = document.querySelector('.cta-buttons');
+                if (ctaButtons) {
+                    let startJourneyBtn = ctaButtons.querySelector('.btn-primary');
+                    if (startJourneyBtn) {
+                        startJourneyBtn.href = 'pages/quiz.html';
+                        startJourneyBtn.innerHTML = '<i class="fas fa-play"></i> Continue Your Journey';
+                    }
+                }
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                }
+            } else {
+                // User is signed out, show login/signup buttons
+                if (loginBtn) loginBtn.style.display = 'inline-flex';
+                if (signupBtn) signupBtn.style.display = 'inline-flex';
+                if (profileBtn) profileBtn.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+                
+                // Reset player stats to default
+                if (playerLevel) playerLevel.textContent = 'LVL 1';
+                if (playerXP) playerXP.textContent = '0 XP';
+                if (playerStreak) playerStreak.textContent = '0 Day Streak';
+                if (levelProgressBar) levelProgressBar.style.width = '0%';
+                // Reset quest counter if present
+                const questCounter = document.querySelector('.quest-counter');
+                if (questCounter) questCounter.textContent = '0';
+            }
+        });
+        
+        // Add logout functionality
+        const logoutBtn = document.querySelector('.logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    // Redirect is handled by the auth state observer
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                }
+            });
+        }
+        
+        // Fix View Quest Paths button (robust for dynamic content)
+        // Fix View Quest Paths button with safe event delegation (no infinite loop)
+        const ctaButtons = document.querySelector('.cta-buttons');
+        if (ctaButtons) {
+            ctaButtons.addEventListener('click', function (e) {
+                const btn = e.target.closest('a.btn-outline');
+                if (btn && btn.getAttribute('href') === '#quest-paths') {
+                    e.preventDefault();
+                    const questPathsSection = document.getElementById('quest-paths');
+                    if (questPathsSection) {
+                        questPathsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        }
+        
+        // Hamburger menu functionality
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const mobileLoginBtn = document.querySelector('.mobile-login-btn');
+        const mobileSignupBtn = document.querySelector('.mobile-signup-btn');
+        const mobileLogoutBtn = document.querySelector('.mobile-logout-btn');
+        const mobileUserStats = document.querySelector('.mobile-user-stats');
+        const mobileUserLevel = document.querySelector('.mobile-user-level span');
+        const mobileUserXP = document.querySelector('.mobile-user-xp span');
+        
+        // Toggle mobile menu
+        hamburgerMenu.addEventListener('click', () => {
+            hamburgerMenu.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+        
+        // Close mobile menu when clicking overlay
+        mobileNavOverlay.addEventListener('click', () => {
+            hamburgerMenu.classList.remove('active');
+            mobileNav.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        });
+        
+        // Sync mobile menu authentication state with main auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Update mobile menu for logged-in users
+                mobileLoginBtn.style.display = 'none';
+                mobileSignupBtn.style.display = 'none';
+                mobileLogoutBtn.style.display = 'block';
+                mobileUserStats.style.display = 'block';
+                
+                // Get user data to update mobile stats
+                try {
+                    const userRef = ref(db, `users/${user.uid}`);
+                    const snapshot = await get(userRef);
+                    
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        mobileUserLevel.textContent = userData.level || 1;
+                        mobileUserXP.textContent = userData.totalPoints || 0;
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data for mobile menu:', error);
+                }
+            } else {
+                // Update mobile menu for logged-out users
+                mobileLoginBtn.style.display = 'block';
+                mobileSignupBtn.style.display = 'block';
+                mobileLogoutBtn.style.display = 'none';
+                mobileUserStats.style.display = 'none';
+            }
+        });
+        
+        // Add logout functionality to mobile logout button
+        mobileLogoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await signOut(auth);
+                // Redirect is handled by the auth state observer
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
+    </script>
+    <script>
         document.querySelectorAll('.progress-bar').forEach(bar => {
             bar.style.width = bar.parentElement.getAttribute('data-progress') + '%';
         });
     </script>
+<script type="module">
+import { auth, db } from './js/config.js';
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userRef = ref(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+                const levelBadge = document.querySelector('.level-badge span');
+                if (levelBadge) levelBadge.textContent = `LVL ${userData.level || 1}`;
+                const points = document.querySelector('.points span');
+                if (points) points.textContent = userData.totalPoints || userData.points || 0;
+                const avatar = document.querySelector('.avatar');
+                if (avatar) {
+                    if (userData.photoURL) {
+                        avatar.innerHTML = `<img src="${userData.photoURL}" alt="User avatar">`;
+                    } else if (userData.displayName) {
+                        avatar.textContent = userData.displayName.charAt(0);
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+  <script type="module" src="js/syncLeaderboardToUsers.js"></script>
 </body>
 </html>
