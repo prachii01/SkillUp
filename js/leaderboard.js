@@ -1,4 +1,5 @@
-import { auth, db, leaderboardRef } from './config.js';
+import { db, leaderboardRef } from './config.js';
+const auth = window.auth;
 import { onValue, ref, get, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
@@ -31,6 +32,41 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = '../pages/login.html';
     }
 });
+
+async function updateLeaderboard(points, totalPoints, displayName, photoURL) {
+    if (!currentUser) return;
+    
+    try {
+        const leaderboardRef = ref(db, `leaderboard/${currentUser.uid}`);
+        const userRef = ref(db, `users/${currentUser.uid}`);
+        // Calculate level based on points
+        const level = calculateLevel(totalPoints);
+        // Prepare leaderboard data
+        const leaderboardData = {
+            uid: currentUser.uid,
+            displayName: displayName || currentUser.displayName || 'Anonymous',
+            photoURL: photoURL || currentUser.photoURL,
+            points: totalPoints,
+            level: level,
+            lastUpdated: new Date().toISOString(),
+            recentPoints: points
+        };
+        // Update leaderboard
+        await set(leaderboardRef, leaderboardData);
+        // Also update users collection to keep in sync
+        console.log('[User Update] About to update user:', currentUser.uid, { level, totalPoints });
+        await update(userRef, {
+            level: level,
+            totalPoints: totalPoints,
+            allTimePoints: totalPoints // for compatibility
+        });
+        console.log('[User Update] User updated:', currentUser.uid, { level, totalPoints });
+        console.log('Leaderboard and user profile updated successfully');
+    } catch (error) {
+        console.error('Error updating leaderboard and user profile:', error);
+        // Continue without failing if leaderboard update fails
+    }
+}
 
 function loadLeaderboard() {
     const leaderboardQuery = query(leaderboardRef, orderByChild('points'), limitToLast(50));
