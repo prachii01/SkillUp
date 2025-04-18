@@ -1,107 +1,203 @@
-# SkillUp - Gamified Learning Platform
+# SkillUp
 
-## Introduction
-SkillUp : A dynamic web-based platform for interactive quizzes, leaderboards, and user profiles. Built with HTML, CSS, and JavaScript, SkillUp helps users test their knowledge, track progress, and compete with others in real time. Perfect for learning, practicing, and having fun!
+A gamified educational platform designed to make learning fun and engaging! Challenge yourself with quizzes, track your progress, earn achievements, and compete on the leaderboard—all with a modern, game-inspired interface.
 
-## Project Type
-Frontend
+---
 
-## Directory Structure
+## 🗺️ User Flow Diagram
+
+Below is the user flow diagram illustrating the navigation and core interactions within the app:
+
+![Userflow Diagram](assets/userflow-diagram.png)
+
+---
+
+## 🚀 Features
+- **Authentication System:** Secure login and registration for users.
+- **Quiz System:** Participate in quizzes, track your score, and progress.
+- **Profile Management:** View and edit your profile, track XP, level, and streaks.
+- **Leaderboard:** Compete with others and climb the ranks.
+- **Achievements:** Unlock badges and rewards for milestones.
+- **Game HUD:** Visualize your level, XP, streak, and achievements in real-time.
+- **Quest Journey:** Follow your learning journey with a hero section and quest visualization.
+- **Responsive UI:** Modern, animated, and mobile-friendly interface.
+
+---
+
+## 📁 Project Structure
+```
+/assets      # Media files (images, icons, diagrams)
+/css         # Styling (CSS, animations)
+/data        # Data storage (JSON, user/quiz data)
+/js          # JavaScript functionality (auth, quiz, profile, leaderboard, config)
+/pages       # Additional HTML pages (quiz, profile, etc.)
+```
+
+---
+
+## 🛠️ Getting Started
+1. **Clone the repository:**
+   ```bash
+   git clone <repo-url>
+   ```
+2. **Open `index.html` in your browser.**
+3. **Enjoy learning and competing!**
+
+---
+
+## 🙌 Credits
+- Built with ❤️ by the SkillUp team:
+  - Abhishek Tiwary
+  - Prachi Goyal
+  - Abhay Kumar
+  - Vishal Yadav
+- UI inspired by modern games, using Font Awesome icons and CSS animations.
+
+---
+
+For questions or contributions, please open an issue or submit a pull request!
+
+    QuizResults --> Dashboard
+    ViewProfile --> EditProfile[Edit Profile]
+    EditProfile --> Dashboard
+    ViewAchievements --> Dashboard
+    ViewLeaderboard --> Dashboard
+    LogOut --> Start
+```
+
+---
+
+## 📂 Project Structure
+
 ```
 SkillUp/
-├─ assets/         # Images, icons, and other static assets
-├─ css/            # Stylesheet files
-├─ data/          # Data files and configurations
-├─ js/            # JavaScript modules and utilities
-├─ pages/         # HTML pages for different sections
+├── index.html              # Homepage
+├── css/
+│   └── style.css           # Main stylesheet
+├── js/
+│   ├── config.js           # Firebase configuration
+│   ├── auth.js             # Authentication logic
+│   ├── quiz.js             # Quiz functionality
+│   └── profile.js          # Profile and achievements
+├── pages/
+│   ├── login.html          # Login page
+│   ├── signup.html         # Signup page
+│   ├── quiz.html           # Quiz interface
+│   └── profile.html        # User profile and achievements
+├── assets/                 # Images and icons
+└── README.md               # Project documentation
 ```
 
-## Features
-- 🎮 **Gamified User Interface**: RPG-themed design with levels, achievements, and rewards
-- 🔐 **Secure Authentication**: 
-  - Email/Password login
-  - Google Sign-in integration
-  - Password recovery system
-- 👤 **User Profiles**: 
-  - Customizable user profiles
-  - Progress tracking
-  - Achievement badges
-- 📊 **Leaderboard System**:
-  - Weekly, monthly, and all-time rankings
-  - Point-based progression
-  - Competitive elements
-- 📱 **Responsive Design**: Works seamlessly across desktop and mobile devices
-- ⚔️ **Quest System**: Learning tasks presented as gaming quests
-- 🏆 **Achievement System**: Rewards for completing learning milestones
+---
 
-## Design Decisions & Assumptions
-1. **Gaming Theme**: Adopted a medieval/RPG theme to enhance engagement
-2. **Firebase Integration**: 
-   - Used Firebase for authentication and real-time database
-   - Assumes stable internet connection for real-time features
-3. **Progressive Learning**: 
-   - Level-based system for structured learning progression
-   - Points system to encourage continuous engagement
-4. **User Experience**:
-   - Animated elements for visual feedback
-   - Loading states for better user experience
-   - Error handling with user-friendly messages
 
-## Installation & Getting Started
-1. Clone the repository
-```bash
-git clone https://github.com/yourusername/skillup.git
-cd skillup
-```
+## 🛠️ Tech Stack
+- **Frontend:** HTML5, CSS3 (with animations), JavaScript (ES6)
+- **Icons:** Font Awesome
+- **Backend:** Firebase Realtime Database & Authentication
 
-2. Set up Firebase Configuration
-- Create a new Firebase project
-- Enable Authentication (Email/Password and Google Sign-in)
-- Set up Realtime Database
-- Add your Firebase configuration in `js/config.js`
+---
 
-3. Configure Firebase Authentication
-- Add your domain to Firebase Auth domains in Firebase Console
-- Set up Google Sign-in credentials
+## ⚙️ Setup Instructions
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/skillup.git
+   ```
+2. **Configure Firebase:**
+   - Update `js/config.js` with your Firebase project credentials.
+3. **Open `index.html` in your browser.**
+4. **(Optional) Deploy to Netlify, Vercel, or Firebase Hosting.**
 
-4. Run the application
-- Use a local server (e.g., Live Server VS Code extension)
-- Open index.html in your browser
+---
 
-## Credentials
-For testing purposes:
-- Email: test@skillup.com
-- Password: Test@123
+## 🙏 Credits
+- UI inspired by modern gamification platforms.
+- Built with [Firebase](https://firebase.google.com/) and [Font Awesome](https://fontawesome.com/).
 
-## Technology Stack
-- **Frontend**:
-  - HTML5
-  - CSS3 (Custom styling)
-  - JavaScript (ES6+)
-  - Font Awesome (Icons)
+---
 
-- **Backend Services**:
-  - Firebase Authentication
-  - Firebase Realtime Database
+## 📄 License
+MIT
+  - Personal statistics
+  - Achievement showcase
+  - Progress visualization
 
-- **External Libraries**:
-  - Firebase SDK v11.6.0
-  - Font Awesome v6.0.0
+- **Leaderboards**
+  - Real-time rankings
+  - Time-based filters
+  - Competition tracking
 
-## Future Enhancements
-1. Multiplayer quests and challenges
-2. Real-time chat system
-3. Custom achievement creation
-4. Mobile app version
-5. Integration with external learning resources
+## Setup Instructions
 
-## Browser Support
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
+1. **Firebase Setup**
+   - Create a new Firebase project
+   - Enable Authentication and Firestore
+   - Copy your Firebase config to `js/config.js`
 
-## Notes
-- The application requires JavaScript to be enabled
-- Pop-ups should be allowed for Google Sign-in functionality
-- Internet connection required for authentication and real-time features
+2. **Local Development**
+   - Clone the repository
+   - Update Firebase configuration
+   - Open `index.html` in a browser
+
+3. **Firebase Database Structure**
+   ```
+   /users
+     ├── userId
+     │   ├── email
+     │   ├── username
+     │   ├── points
+     │   ├── badges[]
+     │   ├── trophies[]
+     │   └── quizzesTaken[]
+     │
+   /quizzes
+     ├── quizId
+     │   ├── title
+     │   ├── description
+     │   ├── difficulty
+     │   ├── timeLimit
+     │   └── questions[]
+     │
+   /leaderboard
+     └── entries[]
+   ```
+
+## Team Members
+
+- Frontend Developer (Member A) - Abhishek Tiwary
+  - Homepage and Quiz interface
+  - UI components and animations
+  - Leaderboard and its functionality
+
+- Backend Developer (Member B) - Abhay Kumar
+  - Firebase integration
+  - Database structure
+  - Authentication system
+
+- Frontend Developer (Member C) - Prachi
+  - Login/Signup pages
+  - Profile interface
+  - Navigation system
+
+- UI/Integration Specialist (Member D) - Vishal Yadav
+  - UI design
+  - Handled Firebase console
+
+## Day 1 Deliverables ✅
+
+- [x] Basic project structure
+- [x] Homepage layout
+- [x] Authentication pages
+- [x] Quiz interface
+- [x] Profile page structure
+- [x] Firebase configuration
+- [x] Responsive design
+- [x] Navigation system
+
+## Next Steps
+
+1. Create quiz data structure
+2. Add real-time quiz functionality
+3. Implement scoring system
+4. Develop achievement system
+5. Create leaderboard functionality
